@@ -2,27 +2,33 @@
     "name": "rsync",
     "version": "0.7.0-dev",
     "description": "Rsync cli wrapper",
-    "main": "rsync.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Dennis14e/node-rsync"
-    },
     "keywords": [
         "rsync",
         "wrapper",
         "cli",
         "command"
     ],
-    "author": "Dennis Neufeld <Dennis14e@users.noreply.github.com>",
+    "homepage": "https://github.com/Dennis14e/node-rsync#readme",
+    "bugs": {
+        "url": "https://github.com/Dennis14e/node-rsync/issues"
+    },
     "license": "MIT",
-    "readmeFilename": "README.md",
+    "author": "Dennis Neufeld <Dennis14e@users.noreply.github.com>",
+    "main": "src/rsync.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Dennis14e/node-rsync.git"
+    },
+    "scripts": {
+        "test": "jest ./tests/",
+        "lint": "eslint ."
+    },
     "devDependencies": {
         "eslint": "^7.7.0",
         "eslint-plugin-jest": "^23.20.0",
         "jest": "^26.4.1"
     },
-    "scripts": {
-        "test": "jest ./tests/",
-        "lint": "eslint ."
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
     }
 }
