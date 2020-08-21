@@ -1,7 +1,5 @@
 # Rsync ![build status](https://travis-ci.org/mattijs/node-rsync.svg?branch=master)
 
-[![NPM](https://nodei.co/npm/rsync.png?downloads=true)](https://nodei.co/npm/rsync/)
-
 `Rsync` is a class for building and executing `rsync` commands with Node.js.
 
 ## Installation
@@ -23,10 +21,10 @@ var Rsync = require('rsync');
 
 // Build the command
 var rsync = new Rsync()
-  .shell('ssh')
-  .flags('az')
-  .source('/path/to/source')
-  .destination('server:/path/to/destination');
+    .shell('ssh')
+    .flags('az')
+    .source('/path/to/source')
+    .destination('server:/path/to/destination');
 
 // Execute the command
 rsync.execute(function(error, code, cmd) {
@@ -142,10 +140,10 @@ Get the complete command that is going to be executed.
 
 ```javascript
 var rsync = new Rsync()
-  .shell('ssh')
-  .flags('az')
-  .source('/p/t/source')
-  .destination('server:/p/t/dest');
+    .shell('ssh')
+    .flags('az')
+    .source('/p/t/source')
+    .destination('server:/p/t/dest');
 
 var c = rsync.command();
 // c is "rsync -az --rsh="ssh" /p/t/source server:/p/t/dest
@@ -213,10 +211,10 @@ rsync process or clean up if the main program exits early.
 ```javascript
 // signal handler function
 var quitting = function() {
-  if (rsyncPid) {
-    rsyncPid.kill();
-  }
-  process.exit();
+    if (rsyncPid) {
+        rsyncPid.kill();
+    }
+    process.exit();
 }
 process.on("SIGINT", quitting); // run signal handler on CTRL-C
 process.on("SIGTERM", quitting); // run signal handler on SIGTERM
@@ -294,7 +292,7 @@ Get or set the source or sources for the rsync command. When this method is call
 ```javascript
 // chained
 rsync.source('/a/path')
-  .source('/b/path');
+    .source('/b/path');
 
 // as Array
 rsync.source(['/a/path', '/b/path']);
@@ -339,7 +337,7 @@ patterns as an array where each pattern will be appended to the list.
 ```javascript
 // chained
 rsync.exclude('.git')
-  .exclude('.DS_Store');
+    .exclude('.DS_Store');
 
 // as Array
 rsync.exclude(['.git', '.DS_Store']);
@@ -354,7 +352,7 @@ an array where each pattern will be appended to the list.
 ```javascript
 // chained
 rsync.include('/a/file')
-  .include('/b/file');
+    .include('/b/file');
 
 // as Array
 rsync.include(['/a/file', '/b/file']);
