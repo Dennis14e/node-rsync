@@ -404,7 +404,7 @@ If there is something broken (which there probably is), the same applies: fork, 
 
 # Changelog
 
-v0.7.0-dev
+v0.7.0
 
   - Complete overhaul
   - Added ESLint
