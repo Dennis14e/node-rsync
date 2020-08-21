@@ -86,6 +86,7 @@ function Rsync(config) {
 
 /**
  * Build a new Rsync command from an options Object.
+ *
  * @param {Object} options
  * @return {Rsync}
  */
@@ -109,9 +110,10 @@ Rsync.build = function(options) {
 
 /**
  * Set an option.
+ *
  * @param {String} option
  * @param {Mixed} value
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.set = function(option, value) {
     option = stripLeadingDashes(option);
@@ -124,7 +126,7 @@ Rsync.prototype.set = function(option, value) {
 /**
  * Unset an option.
  * @param {String} option
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.unset = function(option) {
     option = stripLeadingDashes(option);
@@ -148,7 +150,7 @@ Rsync.prototype.unset = function(option) {
  *
  * @param {String|Array|Object} flags
  * @param {Boolean} set
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.flags = function(flags, set) {
     // Do some argument handling
@@ -201,6 +203,7 @@ Rsync.prototype.flags = function(flags, set) {
 
 /**
  * Check if an option is set.
+ *
  * @param {String} option
  * @return {Boolean}
  */
@@ -211,6 +214,7 @@ Rsync.prototype.isSet = function(option) {
 
 /**
  * Get an option by name.
+ *
  * @param {String} name
  * @return {Mixed}
  */
@@ -243,7 +247,7 @@ Rsync.prototype.option = function(name) {
  *   })
  *
  * @param {Array} patterns
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.patterns = function(patterns) {
     if (arguments.length > 1) {
@@ -288,7 +292,7 @@ Rsync.prototype.patterns = function(patterns) {
  * of patterns for the rsync command.
  *
  * @param {String|Array} patterns
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.exclude = function(patterns) {
     if (arguments.length > 1) {
@@ -310,7 +314,7 @@ Rsync.prototype.exclude = function(patterns) {
  * of patterns for the rsync command.
  *
  * @param {String|Array} patterns
- * @return Rsync
+ * @return {Rsync}
  */
 Rsync.prototype.include = function(patterns) {
     if (arguments.length > 1) {
@@ -329,6 +333,7 @@ Rsync.prototype.include = function(patterns) {
 
 /**
  * Get the command that is going to be executed.
+ *
  * @return {String}
  */
 Rsync.prototype.command = function() {
@@ -352,12 +357,14 @@ Rsync.prototype.resetCommand = function() {
 /**
  * String representation of the Rsync command. This is the command that is
  * going to be executed when calling Rsync::execute.
+ *
  * @return {String}
  */
 Rsync.prototype.toString = Rsync.prototype.command;
 
 /**
  * Get the arguments for the rsync command.
+ *
  * @return {Array}
  */
 Rsync.prototype.args = function() {
@@ -432,8 +439,8 @@ Rsync.prototype.args = function() {
 /**
  * Get and set rsync process cwd directory.
  *
- * @param  {string} cwd= Directory path relative to current process directory.
- * @return {string} Return current _cwd.
+ * @param  {String} cwd= Directory path relative to current process directory.
+ * @return {String} Return current _cwd.
  */
 Rsync.prototype.cwd = function(cwd) {
     if (arguments.length > 0) {
@@ -450,8 +457,8 @@ Rsync.prototype.cwd = function(cwd) {
 /**
  * Get and set rsync process environment variables
  *
- * @param  {string} env= Environment variables
- * @return {string} Return current _env.
+ * @param  {String} env= Environment variables
+ * @return {String} Return current _env.
  */
 Rsync.prototype.env = function(env) {
     if (arguments.length > 0) {
@@ -871,6 +878,7 @@ module.exports = Rsync;
 /**
  * Create a chainable function on the Rsync prototype for getting and setting an
  * internal value.
+ *
  * @param {String} name
  * @param {String} internal
  */
@@ -910,6 +918,7 @@ function createListAccessor(name, internal) {
 
 /**
  * Create a shorthand method on the Rsync prototype for setting and unsetting a simple option.
+ *
  * @param {String} option
  * @param {String} name
  */
@@ -971,6 +980,7 @@ function exposeMultiOption(option, name) {
 
 /**
  * Expose an rsync long option on the Rsync prototype.
+ *
  * @param {String} option   The option to expose
  * @param {String} name     An optional alternative name for the option.
  */
@@ -992,15 +1002,11 @@ function exposeLongOption(option, name) {
  *
  * @param {String} name
  * @param {String} value
- * @param {Function|boolean} escapeArg
+ * @param {Function|Boolean} escapeArg
  * @return {String}
  */
 function buildOption(name, value, escapeArg) {
-    if (typeof escapeArg === 'boolean') {
-        escapeArg = (!escapeArg) ? noop : null;
-    }
-
-    if (typeof escapeArg !== 'function') {
+    if (typeof escapeArg !== 'function' || escapeArg === true) {
         escapeArg = escapeShellArg;
     }
 
@@ -1023,6 +1029,7 @@ function buildOption(name, value, escapeArg) {
 
 /**
  * Escape an argument for use in a shell command when necessary.
+ *
  * @param {String} arg
  * @return {String}
  */
@@ -1035,6 +1042,7 @@ function escapeShellArg(arg) {
 
 /**
  * Escape a filename for use in a shell command.
+ *
  * @param {String} filename the filename to escape
  * @return {String} the escaped version of the filename
  */
@@ -1054,6 +1062,7 @@ function escapeFileArg(filename) {
 
 /**
  * Strip the leading dashes from a value.
+ *
  * @param {String} value
  * @return {String}
  */
@@ -1068,6 +1077,7 @@ function stripLeadingDashes(value) {
 /**
  * Simple function for checking if a value is an Array. Will use the native
  * Array.isArray method if available.
+ *
  * @private
  * @param {Mixed} value
  * @return {Boolean}
@@ -1084,6 +1094,7 @@ function isArray(value) {
 /**
  * Simple hasOwnProperty wrapper. This will call hasOwnProperty on the obj
  * through the Object prototype.
+ *
  * @private
  * @param {Object} obj  The object to check the property on
  * @param {String} key  The name of the property to check
@@ -1092,8 +1103,6 @@ function isArray(value) {
 function hasOP(obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 }
-
-function noop() {}
 
 /**
  * Simple debug printer.

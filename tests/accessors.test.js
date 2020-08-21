@@ -7,7 +7,9 @@ var path = require('path');
 describe('accessors', function () {
 
     describe('#executable', function () {
-        it('Should set the executable to use', function () {
+        it('should set the executable to use', function () {
+            expect.assertions(2);
+
             var rsync = Rsync.build({
                 'source':      'a.txt',
                 'destination': 'b.txt',
@@ -21,7 +23,9 @@ describe('accessors', function () {
 
 
     describe('#executableShell', function () {
-        it('Should set the the executable shell to use', function () {
+        it('should set the the executable shell to use', function () {
+            expect.assertions(1);
+
             var rsync = Rsync.build({
                 'source':          'a.txt',
                 'destination':     'b.txt',
@@ -34,7 +38,9 @@ describe('accessors', function () {
 
 
     describe('#cwd', function () {
-        it('Should set the the cwd to use', function () {
+        it('should set the the cwd to use', function () {
+            expect.assertions(1);
+
             var rsync = Rsync.build({
                 'source':      'a.txt',
                 'destination': 'b.txt',
@@ -46,7 +52,9 @@ describe('accessors', function () {
     });
 
     describe('#env', function () {
-        it('Should set the the env variables to use', function () {
+        it('should set the the env variables to use', function () {
+            expect.assertions(1);
+
             var rsync = Rsync.build({
                 'source':      'a.txt',
                 'destination': 'b.txt',

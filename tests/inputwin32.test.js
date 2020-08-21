@@ -17,6 +17,8 @@ describe('inputwin32', function () {
         var rsync;
 
         it('should convert windows path under windows',function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'C:\\home\\username\\develop\\readme.txt' ],
                 destination: 'themoon'
@@ -32,6 +34,8 @@ describe('inputwin32', function () {
         var rsync;
 
         it('should convert widows path for destination', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'readme.txt' ],
                 destination: 'C:\\home\\username\\develop\\'

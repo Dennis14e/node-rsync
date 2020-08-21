@@ -15,14 +15,18 @@ describe('filters', function () {
 
 
     describe('#patterns', function () {
-        it('Should interpret the first character', function () {
+        it('should interpret the first character', function () {
+            expect.assertions(2);
+
             command.patterns(['-.git', '+/tests/*.test.js']);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--exclude=.git --include=/tests/*.test.js');
         });
 
-        it('Should be able to be set as an Object', function () {
+        it('should be able to be set as an Object', function () {
+            expect.assertions(2);
+
             command.patterns([
                 { 'action': '+', 'pattern': '.git' },
                 { 'action': '-', 'pattern': '/tests/*.test.js' }
@@ -32,13 +36,17 @@ describe('filters', function () {
             expect(command.command()).toMatch('--include=.git --exclude=/tests/*.test.js');
         });
 
-        it('Should throw an error for invalid patterns', function () {
+        it('should throw an error for invalid patterns', function () {
+            expect.assertions(1);
+
             expect(function () {
                 command.patterns(['*invalid'])
             }).toThrow(/^invalid pattern:/i);
         });
 
-        it('Should add patterns to output in order added', function () {
+        it('should add patterns to output in order added', function () {
+            expect.assertions(2);
+
             command.patterns([
                 { 'action': '-', 'pattern': '.git' },
                 { 'action': '+', 'pattern': '/tests/*.test.js' },
@@ -52,28 +60,36 @@ describe('filters', function () {
 
 
     describe('#exclude', function () {
-        it('Should accept patterns as arguments', function () {
+        it('should accept patterns as arguments', function () {
+            expect.assertions(2);
+
             command.exclude('.git', '.out');
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--exclude=.git --exclude=.out');
         });
 
-        it ('Should accept patterns as an Array', function () {
+        it ('should accept patterns as an Array', function () {
+            expect.assertions(2);
+
             command.exclude(['.build', 'docs']);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--exclude=.build --exclude=docs');
         });
 
-        it('Should add patterns to output in order added', function () {
+        it('should add patterns to output in order added', function () {
+            expect.assertions(2);
+
             command.exclude('.git', 'docs', '/tests/*.test.js');
 
             expect(command._patterns).toHaveLength(3);
             expect(command.command()).toMatch('--exclude=.git --exclude=docs --exclude=/tests/*.test.js');
         });
 
-        it('Should escape filenames', function () {
+        it('should escape filenames', function () {
+            expect.assertions(2);
+
             command.exclude('with space', 'tests/* test.js');
 
             expect(command._patterns).toHaveLength(2);
@@ -83,28 +99,36 @@ describe('filters', function () {
 
 
     describe('#include', function () {
-        it('Should accept patterns as arguments', function () {
+        it('should accept patterns as arguments', function () {
+            expect.assertions(2);
+
             command.include('.git', '.out');
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--include=.git --include=.out');
         });
 
-        it ('Should accept patterns as an Array', function () {
+        it ('should accept patterns as an Array', function () {
+            expect.assertions(2);
+
             command.include(['.build', 'docs']);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--include=.build --include=docs');
         });
 
-        it('Should add patterns to output in order added', function () {
+        it('should add patterns to output in order added', function () {
+            expect.assertions(2);
+
             command.include('LICENSE', 'README.md', 'rsync.js');
 
             expect(command._patterns).toHaveLength(3);
             expect(command.command()).toMatch('--include=LICENSE --include=README.md --include=rsync.js');
         });
 
-        it('Should escape filenames', function () {
+        it('should escape filenames', function () {
+            expect.assertions(2);
+
             command.include('LICENSE FILE', '/tests/* test.js');
 
             expect(command._patterns).toHaveLength(2);

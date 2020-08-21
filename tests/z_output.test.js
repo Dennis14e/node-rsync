@@ -12,7 +12,9 @@ var Rsync = require('../rsync');
 describe('output tests', function () {
     var rsync;
 
-    it('Shoud build case 1', function () {
+    it('shoud build case 1', function () {
+        expect.assertions(1);
+
         rsync = new Rsync()
             .flags('avz')
             .source('path_a/')
@@ -27,7 +29,9 @@ describe('output tests', function () {
         );
     });
 
-    it('Shoud build case 2', function () {
+    it('shoud build case 2', function () {
+        expect.assertions(1);
+
         rsync = new Rsync()
             .flags('rav')
             .set('f', '- .git')

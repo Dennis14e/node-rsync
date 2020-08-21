@@ -9,7 +9,9 @@ describe('input', function () {
     describe('#source', function () {
         var rsync;
 
-        it('Should be able to be set as a single String', function () {
+        it('should be able to be set as a single String', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      'afile.txt',
                 destination: 'some_location.txt'
@@ -18,7 +20,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/\safile.txt\s/g);
         });
 
-        it('Should be able to be set as an Array', function () {
+        it('should be able to be set as an Array', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'afile.txt', 'bfile.txt' ],
                 destination: 'some_location.txt'
@@ -27,7 +31,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/\safile.txt bfile.txt\s/g);
         });
 
-        it('Should not escape regular filenames', function () {
+        it('should not escape regular filenames', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'some_file.txt' ],
                 destination: 'wherever_we_want.txt'
@@ -36,7 +42,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/\ssome_file.txt\s/g);
         });
 
-        it('Should escape spaced filenames', function () {
+        it('should escape spaced filenames', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'some file.txt' ],
                 destination: 'wherever_we_want.txt'
@@ -45,7 +53,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/\ssome\\ file.txt\s/g);
         });
 
-        it('Should have quote characters escaped',function () {
+        it('should have quote characters escaped',function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'a_quoted\'filename".txt' ],
                 destination: 'themoon'
@@ -54,7 +64,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/ a_quoted\\'filename\\".txt /);
         });
 
-        it('Should have parentheses escaped', function () {
+        it('should have parentheses escaped', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'a (file) with parantheses.txt' ],
                 destination: 'themoon'
@@ -63,7 +75,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/a\\ \\\(file\\\)\\ with\\ parantheses.txt/);
         });
 
-        it('Should allow mixed filenames', function () {
+        it('should allow mixed filenames', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source: [
                     'example file.txt', 'manual.pdf', '\'special_case 1\'.rtf'
@@ -80,7 +94,9 @@ describe('input', function () {
     describe('#destination', function () {
         var rsync;
 
-        it('Should not have regular filenames escaped', function () {
+        it('should not have regular filenames escaped', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'file1.txt' ],
                 destination: 'the_destination/'
@@ -89,7 +105,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/the_destination\/$/);
         });
 
-        it('Should have spaced filenames escaped', function () {
+        it('should have spaced filenames escaped', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'file2.txt' ],
                 destination: 'whereever we want.txt'
@@ -98,7 +116,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/whereever\\ we\\ want.txt$/);
         });
 
-        it('Should have quote characters escaped', function () {
+        it('should have quote characters escaped', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'space.txt' ],
                 destination: '\'to infinity and beyond"/'
@@ -107,7 +127,9 @@ describe('input', function () {
             expect(rsync.command()).toMatch(/\\'to\\ infinity\\ and\\ beyond\\"\/$/);
         });
 
-        it('Should have dollar sign characters escaped', function () {
+        it('should have dollar sign characters escaped', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 source:      [ 'file3.txt' ],
                 destination: '$some_destination/'

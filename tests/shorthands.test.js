@@ -19,7 +19,9 @@ describe('shorthands', function () {
     describe('#shell', function () {
         var rsync;
 
-        it('Should add rsh option', function () {
+        it('should add rsh option', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 'source':       'source',
                 'destination':  'destination',
@@ -29,7 +31,9 @@ describe('shorthands', function () {
             expect(rsync.command()).toBe('rsync --rsh=ssh source destination');
         });
 
-        it('Should escape options with spaces', function () {
+        it('should escape options with spaces', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 'source':       'source',
                 'destination':  'destination',
@@ -45,7 +49,9 @@ describe('shorthands', function () {
     describe('#chmod', function () {
         var rsync;
 
-        it('Should allow a simple value through build', function () {
+        it('should allow a simple value through build', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 'source':      'source',
                 'destination': 'destination',
@@ -55,7 +61,9 @@ describe('shorthands', function () {
             expect(rsync.command()).toMatch(/--chmod=ug=rwx/i);
         });
 
-        it('Should allow multiple values through build', function () {
+        it('should allow multiple values through build', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 'source':      'source',
                 'destination': 'destination',
@@ -65,7 +73,9 @@ describe('shorthands', function () {
             expect(rsync.command()).toMatch(/--chmod=og=uwx --chmod=rx=ogw/i);
         });
 
-        it('Should allow multiple values through setter', function () {
+        it('should allow multiple values through setter', function () {
+            expect.assertions(1);
+
             rsync = Rsync.build({
                 'source':      'source',
                 'destination': 'destination'
@@ -76,7 +86,9 @@ describe('shorthands', function () {
             expect(rsync.command()).toMatch(/--chmod=o=rx --chmod=ug=rwx/i);
         });
 
-        it('Should return all the chmod values', function () {
+        it('should return all the chmod values', function () {
+            expect.assertions(1);
+
             var inputValues = [ 'og=uwx', 'rx=ogw' ];
 
             rsync = Rsync.build({
@@ -87,7 +99,7 @@ describe('shorthands', function () {
 
             var values = rsync.chmod();
 
-            expect(inputValues).toEqual(values);
+            expect(inputValues).toStrictEqual(values);
         });
     });
 
@@ -99,12 +111,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the delete option', function () {
+        it('should add the delete option', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync --delete/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             testSet().delete(false);
             expect(command.command()).toBe(output);
         });
@@ -118,12 +134,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the progress option', function () {
+        it('should add the progress option', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync --progress/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             testSet().progress(false);
             expect(command.command()).toBe(output);
         });
@@ -137,12 +157,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the archive flag', function () {
+        it('should add the archive flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -a/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             testSet().archive(false);
             expect(command.command()).toBe(output);
         });
@@ -156,12 +180,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the compress flag', function () {
+        it('should add the compress flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -z/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().compress(false);
             expect(command.command()).toBe(output);
         });
@@ -175,12 +203,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the recursive flag', function () {
+        it('should add the recursive flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -r/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().recursive(false);
             expect(command.command()).toBe(output);
         });
@@ -194,12 +226,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the update flag', function () {
+        it('should add the update flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -u/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().update(false);
             expect(command.command()).toBe(output);
         });
@@ -213,12 +249,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the quiet flag', function () {
+        it('should add the quiet flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -q/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().quiet(false);
             expect(command.command()).toBe(output);
         });
@@ -232,12 +272,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the dirs flag', function () {
+        it('should add the dirs flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -d/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().dirs(false);
             expect(command.command()).toBe(output);
         });
@@ -251,12 +295,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the links flag', function () {
+        it('should add the links flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -l/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().links(false);
             expect(command.command()).toBe(output);
         });
@@ -270,12 +318,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the dry flag', function () {
+        it('should add the dry flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -n/);
         });
 
-        it('Should be able to be unset', function () {
+        it('should be able to be unset', function () {
+            expect.assertions(1);
+
             command = testSet().dry(false);
             expect(command.command()).toBe(output);
         });
@@ -289,12 +341,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the hard links flag', function () {
+        it('should add the hard links flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -H/);
         });
 
-        it('Should unset the hard links flag', function () {
+        it('should unset the hard links flag', function () {
+            expect.assertions(1);
+
             command = testSet().hardLinks(false);
             expect(command.command()).toBe(output);
         });
@@ -308,12 +364,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the perms flag', function () {
+        it('should add the perms flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -p/);
         });
 
-        it('Should unset the perms flag', function () {
+        it('should unset the perms flag', function () {
+            expect.assertions(1);
+
             command = testSet().perms(false);
             expect(command.command()).toBe(output);
         });
@@ -327,12 +387,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the executability flag', function () {
+        it('should add the executability flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -E/);
         });
 
-        it('Should unset the executability flag', function () {
+        it('should unset the executability flag', function () {
+            expect.assertions(1);
+
             command = testSet().executability(false);
             expect(command.command()).toBe(output);
         });
@@ -346,12 +410,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the owner flag', function () {
+        it('should add the owner flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -o/);
         });
 
-        it('Should unset the owner flag', function () {
+        it('should unset the owner flag', function () {
+            expect.assertions(1);
+
             command = testSet().owner(false);
             expect(command.command()).toBe(output);
         });
@@ -365,12 +433,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should add the group flag', function () {
+        it('should add the group flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -g/);
         });
 
-        it('Should unset the group flag', function () {
+        it('should unset the group flag', function () {
+            expect.assertions(1);
+
             command = testSet().group(false);
             expect(command.command()).toBe(output);
         });
@@ -384,12 +456,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should set the acls flag', function () {
+        it('should set the acls flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -A/);
         });
 
-        it('Should unset the acls flag', function () {
+        it('should unset the acls flag', function () {
+            expect.assertions(1);
+
             command = testSet().acls(false);
             expect(command.command()).toBe(output);
         });
@@ -403,12 +479,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should set the xattrs flag', function () {
+        it('should set the xattrs flag', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -X/);
         });
 
-        it('Should unset the xattrs flag', function () {
+        it('should unset the xattrs flag', function () {
+            expect.assertions(1);
+
             command = testSet().xattrs(false);
             expect(command.command()).toBe(output);
         });
@@ -422,12 +502,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should set the the devices option', function () {
+        it('should set the the devices option', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync --devices/);
         });
 
-        it('Should unset the devices option', function () {
+        it('should unset the devices option', function () {
+            expect.assertions(1);
+
             command = testSet().devices(false);
             expect(command.command()).toBe(output);
         });
@@ -441,12 +525,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should set the the specials option', function () {
+        it('should set the the specials option', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync --specials/);
         });
 
-        it('Should unset the specials option', function () {
+        it('should unset the specials option', function () {
+            expect.assertions(1);
+
             command = testSet().specials(false);
             expect(command.command()).toBe(output);
         });
@@ -460,12 +548,16 @@ describe('shorthands', function () {
             return command;
         };
 
-        it('Should set the the times option', function () {
+        it('should set the the times option', function () {
+            expect.assertions(1);
+
             testSet();
             expect(command.command()).toMatch(/^rsync -t/);
         });
 
-        it('Should unset the times option', function () {
+        it('should unset the times option', function () {
+            expect.assertions(1);
+
             command = testSet().times(false);
             expect(command.command()).toBe(output);
         });

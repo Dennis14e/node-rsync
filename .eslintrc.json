@@ -6,18 +6,17 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:jest/recommended",
-        "plugin:jest/style"
+        "plugin:jest/all"
     ],
     "parserOptions": {
-        "ecmaVersion": 2018,
+        "ecmaVersion": 6,
         "sourceType": "module"
     },
     "rules": {
-        "require-jsdoc": "off",
         "indent": [ "error", 4 ],
         "max-len": [ "error", { "code": 120 } ],
-        "no-prototype-builtins": "off"
+        "require-jsdoc": "error",
+        "jest/no-hooks": "off"
     },
     "plugins": [
         "jest"
