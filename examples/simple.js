@@ -1,3 +1,4 @@
+'use strict';
 /*
  * A simple example that builds and executes the following command:
  *
@@ -9,7 +10,7 @@
  * The `shell` method is a shorthand for using `set('rsh', 'ssh')`.
  */
 
-import Rsync from '../rsync';
+var Rsync = require('../rsync');
 var cmd;
 
 /*
