@@ -1,7 +1,7 @@
-/* global describe,it,beforeEach,xdescribe,xit */
 'use strict';
-var assert = require('chai').assert;
+
 var Rsync = require('../rsync');
+
 
 describe('options', function () {
     var command;
@@ -9,160 +9,159 @@ describe('options', function () {
         command = new Rsync();
     });
 
-//# set ///////////////////////////////////////////////////////////////////////////////////////////
+
+    // #set
     describe('#set', function () {
-        it('should set a an option with a value', function () {
+        it('Should set a an option with a value', function () {
             command.set('rsh', 'ssh');
-            assert.propertyVal(command._options, 'rsh', 'ssh');
+            expect(command._options).toHaveProperty('rsh', 'ssh');
         });
 
-        it('should enable an option without a value', function () {
+        it('Should enable an option without a value', function () {
             command.set('dir');
-            assert.property(command._options, 'dir');
+            expect(command._options).toHaveProperty('dir');
         });
 
-        it('should strip leading dashes', function () {
+        it('Should strip leading dashes', function () {
             command.set('--progress');
             command.set('--rsh', 'ssh');
-            assert.property(command._options, 'progress');
-            assert.propertyVal(command._options, 'rsh', 'ssh');
+            expect(command._options).toHaveProperty('progress');
+            expect(command._options).toHaveProperty('rsh', 'ssh');
         });
 
     });
 
-//# unset /////////////////////////////////////////////////////////////////////////////////////////
+    // #unset
     describe('#unset', function () {
-
-        it('should unset an option that has a value', function () {
+        it('Should unset an option that has a value', function () {
             command.set('rsh', 'ssh');
-            assert.propertyVal(command._options, 'rsh', 'ssh');
+            expect(command._options).toHaveProperty('rsh', 'ssh');
 
             command.unset('rsh');
-            assert.lengthOf(Object.keys(command._options), 0);
-            assert.notProperty(command._options, 'rsh');
+            expect(Object.keys(command._options)).toHaveLength(0);
+            expect(command._options).not.toHaveProperty('rsh');
         });
 
-        it('should unset an enabled options', function () {
+        it('Should unset an enabled options', function () {
             command.set('progress');
-            assert.property(command._options, 'progress');
+            expect(command._options).toHaveProperty('progress');
 
             command.unset('progress');
-            assert.notProperty(command._options, 'progress');
+            expect(command._options).not.toHaveProperty('progress');
         });
 
-        it('should unset an option that was not set', function () {
-            assert.notProperty(command._options, 'dirs');
+        it('Should unset an option that was not set', function () {
+            expect(command._options).not.toHaveProperty('dirs');
             command.unset('dirs');
-            assert.notProperty(command._options, 'dirs');
+            expect(command._options).not.toHaveProperty('dirs');
         });
-
     });
 
-//# isSet /////////////////////////////////////////////////////////////////////////////////////////
+
+    // #isSet
     describe('#isSet', function () {
 
-        it('should return if an option is set', function () {
+        it('Should return if an option is set', function () {
             command.set('inplace');
-            assert.isTrue(command.isSet('inplace'));
+            expect(command.isSet('inplace')).toBe(true);
 
             command.set('b');
-            assert.isTrue(command.isSet('b'));
+            expect(command.isSet('b')).toBe(true);
 
             command.set('max-size', '1009');
-            assert.isTrue(command.isSet('max-size'));
+            expect(command.isSet('max-size')).toBe(true);
         });
 
-        it('should strip leading dashes from option name', function () {
+        it('Should strip leading dashes from option name', function () {
             command.set('inplace');
-            assert.isTrue(command.isSet('--inplace'));
+            expect(command.isSet('--inplace')).toBe(true);
 
             command.set('b');
-            assert.isTrue(command.isSet('-b'));
+            expect(command.isSet('-b')).toBe(true);
 
             command.set('max-size', '1009');
-            assert.isTrue(command.isSet('--max-size'));
+            expect(command.isSet('--max-size')).toBe(true);
         });
 
     });
 
-//# option ////////////////////////////////////////////////////////////////////////////////////////
+
+    // #option
     describe('#option', function () {
-
-        it('should return the value for an option', function () {
+        it('Should return the value for an option', function () {
             command.set('max-size', '1009');
-            assert.equal(command.option('max-size'), '1009');
+            expect(command.option('max-size')).toBe('1009');
         });
 
 
-        it('should return null for a valueless options', function () {
+        it('Should return null for a valueless options', function () {
             command.set('progress');
-            assert.isNull(command.option('progress'));
+            expect(command.option('progress')).toBeNull();
         });
 
-        it('should return undefined for an option that is not set', function () {
-            assert.isUndefined(command.option('random'));
+        it('Should return undefined for an option that is not set', function () {
+            expect(command.option('random')).toBeUndefined();
         });
 
-        it('should strip leading dashes from option names', function () {
+        it('Should strip leading dashes from option names', function () {
             command.set('progress');
-            assert.isNull(command.option('--progress'));
+            expect(command.option('--progress')).toBeNull();
 
             command.set('g');
-            assert.isNull(command.option('-g'));
+            expect(command.option('-g')).toBeNull();
 
             command.set('max-size', '2009');
-            assert.equal(command.option('--max-size'), '2009');
+            expect(command.option('--max-size')).toBe('2009');
 
-            assert.isUndefined(command.option('--random'));
+            expect(command.option('--random')).toBeUndefined();
         });
-
     });
 
-//# flags /////////////////////////////////////////////////////////////////////////////////////////
+
+    // #flags
     describe('#flags', function () {
-
-        it('it should set multiple flags from a String', function () {
+        it('Should set multiple flags from a String', function () {
             command.flags('avz');
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
         });
 
-        it('should set multiple flags from arguments', function () {
+        it('Should set multiple flags from arguments', function () {
             command.flags('v', 'z', 'a');
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
         });
 
-        it('should set multiple flags from an array', function () {
+        it('Should set multiple flags from an array', function () {
             command.flags(['z', 'a', 'v']);
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
         });
 
-        it('should unset multiple flags from a string', function () {
+        it('Should unset multiple flags from a string', function () {
             command.flags('avz');
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
 
             command.flags('az', false);
-            assert.sameMembers(Object.keys(command._options), ['v']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['v']));
         });
 
-        it('should set multiple flags from arguments', function () {
+        it('Should set multiple flags from arguments (string)', function () {
             command.flags('avz');
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
 
             command.flags('z', 'v', false);
-            assert.sameMembers(Object.keys(command._options), ['a']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a']));
         });
 
-        it('should set multiple flags from an array', function () {
+        it('Should set multiple flags from an array (string)', function () {
             command.flags('avz');
-            assert.sameMembers(Object.keys(command._options), ['a', 'v', 'z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['a', 'v', 'z']));
 
             command.flags(['a', 'v'], false);
-            assert.sameMembers(Object.keys(command._options), ['z']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['z']));
         });
 
-        it('should set/unset flags from an Object', function () {
+        it('Should set/unset flags from an object', function () {
             command.flags('flag');
-            assert.sameMembers(Object.keys(command._options), ['f', 'l', 'a', 'g']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['f', 'l', 'a', 'g']));
 
             command.flags({
                 'l': false,
@@ -171,9 +170,8 @@ describe('options', function () {
                 'w': true,
                 'b': true
             });
-            assert.sameMembers(Object.keys(command._options), ['f', 'u', 'w', 'g', 'a', 'b']);
+            expect(Object.keys(command._options)).toEqual(expect.arrayContaining(['f', 'u', 'w', 'g', 'a', 'b']));
 
         });
-
     });
 });

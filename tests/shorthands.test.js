@@ -1,387 +1,451 @@
-"use strict";
-/* global describe, it */
-var assert = require('chai').assert;
+'use strict';
+
 var Rsync = require('../rsync');
-var assertOutput = require('./helpers/output').assertOutput;
-var assertOutputPattern = require('./helpers/output').assertOutputPattern;
+
 
 describe('shorthands', function () {
     var command, output;
 
     beforeEach(function() {
         command = Rsync.build({
-            'source': 'SOURCE',
+            'source':      'SOURCE',
             'destination': 'DESTINATION'
         });
         output = 'rsync SOURCE DESTINATION';
     });
 
-//# shell /////////////////////////////////////////////////////////////////////////////////////////
+
+    // #shell
     describe('#shell', function () {
         var rsync;
-        it('should add rsh option', function () {
+
+        it('Should add rsh option', function () {
             rsync = Rsync.build({
                 'source':       'source',
                 'destination':  'destination',
                 'shell':        'ssh'
             });
-            assertOutput(rsync, 'rsync --rsh=ssh source destination');
-      });
 
-      it('should escape options with spaces', function () {
+            expect(rsync.command()).toBe('rsync --rsh=ssh source destination');
+        });
+
+        it('Should escape options with spaces', function () {
             rsync = Rsync.build({
                 'source':       'source',
                 'destination':  'destination',
                 'shell':        'ssh -i /home/user/.ssh/rsync.key'
             });
-            assertOutput(rsync, 'rsync --rsh="ssh -i /home/user/.ssh/rsync.key" source destination');
-      });
-  });
 
-//# chmod /////////////////////////////////////////////////////////////////////////////////////////
+            expect(rsync.command()).toBe('rsync --rsh="ssh -i /home/user/.ssh/rsync.key" source destination');
+        });
+    });
+
+
+    // #chmod
     describe('#chmod', function () {
         var rsync;
 
-        it('should allow a simple value through build', function () {
+        it('Should allow a simple value through build', function () {
             rsync = Rsync.build({
-                'source': 'source',
+                'source':      'source',
                 'destination': 'destination',
-                'chmod': 'ug=rwx'
+                'chmod':       'ug=rwx'
             });
-            assertOutputPattern(rsync, /chmod=ug=rwx/i);
+
+            expect(rsync.command()).toMatch(/chmod=ug=rwx/i);
         });
 
-        it('should allow multiple values through build', function () {
+        it('Should allow multiple values through build', function () {
             rsync = Rsync.build({
-                'source': 'source',
+                'source':      'source',
                 'destination': 'destination',
-                'chmod': [ 'og=uwx', 'rx=ogw' ]
+                'chmod':       [ 'og=uwx', 'rx=ogw' ]
             });
-            assertOutputPattern(rsync, /chmod=og=uwx --chmod=rx=ogw/);
+
+            expect(rsync.command()).toMatch(/chmod=og=uwx --chmod=rx=ogw/i);
         });
 
-        it('should allow multiple values through setter', function () {
+        it('Should allow multiple values through setter', function () {
             rsync = Rsync.build({
-                'source': 'source',
+                'source':      'source',
                 'destination': 'destination'
             });
             rsync.chmod('o=rx');
             rsync.chmod('ug=rwx');
-            assertOutputPattern(rsync, /--chmod=o=rx --chmod=ug=rwx/);
+
+            expect(rsync.command()).toMatch(/--chmod=o=rx --chmod=ug=rwx/i);
         });
 
-        it('should return all the chmod values', function () {
+        it('Should return all the chmod values', function () {
             var inputValues = [ 'og=uwx', 'rx=ogw' ];
+
             rsync = Rsync.build({
-                'source': 'source',
+                'source':      'source',
                 'destination': 'destination',
-                'chmod': inputValues
+                'chmod':       inputValues
             });
 
             var values = rsync.chmod();
-            assert.deepEqual(values, inputValues);
+
+            expect(inputValues).toEqual(values);
         });
     });
 
-//# delete ////////////////////////////////////////////////////////////////////////////////////////
+
+    // #delete
     describe('#delete', function () {
         var testSet = function () {
             command.delete();
-            assertOutputPattern(command, /^rsync --delete/);
             return command;
         };
-        it('should add the delete option', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the delete option', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync --delete/);
+        });
+
+        it('Should be able to be unset', function () {
             testSet().delete(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# progress //////////////////////////////////////////////////////////////////////////////////////
+
+    // #progress
     describe('#progress', function () {
         var testSet = function () {
             command.progress();
-            assertOutputPattern(command, /^rsync --progress/);
             return command;
         };
-        it('should add the progress option', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the progress option', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync --progress/);
+        });
+
+        it('Should be able to be unset', function () {
             testSet().progress(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# archive ///////////////////////////////////////////////////////////////////////////////////////
+
+    // #archive
     describe('#archive', function () {
         var testSet = function () {
             command.archive();
-            assertOutputPattern(command, /^rsync -a/);
             return command;
         };
-        it('should add the archive flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the archive flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -a/);
+        });
+
+        it('Should be able to be unset', function () {
             testSet().archive(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# compress //////////////////////////////////////////////////////////////////////////////////////
+
+    // #compress
     describe('#compress', function () {
         var testSet = function () {
             command.compress();
-            assertOutputPattern(command, /^rsync -z/);
             return command;
         };
-        it('should add the compress flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the compress flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -z/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().compress(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# recursive /////////////////////////////////////////////////////////////////////////////////////
+
+    // #recursive
     describe('#recursive', function () {
         var testSet = function () {
             command.recursive();
-            assertOutputPattern(command, /^rsync -r/);
             return command;
         };
-        it('should add the recursive flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the recursive flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -r/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().recursive(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# update ////////////////////////////////////////////////////////////////////////////////////////
+
+    // #update
     describe('#update', function () {
         var testSet = function () {
             command.update();
-            assertOutputPattern(command, /^rsync -u/);
             return command;
         };
-        it('should add the update flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the update flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -u/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().update(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# quiet /////////////////////////////////////////////////////////////////////////////////////////
+
+    // #quiet
     describe('#quiet', function () {
         var testSet = function () {
             command.quiet();
-            assertOutputPattern(command, /^rsync -q/);
             return command;
         };
-        it('should add the quiet flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the quiet flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -q/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().quiet(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# dirs //////////////////////////////////////////////////////////////////////////////////////////
+
+    // #dirs
     describe('#dirs', function () {
         var testSet = function () {
             command.dirs();
-            assertOutputPattern(command, /^rsync -d/);
             return command;
         };
-        it('should add the dirs flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the dirs flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -d/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().dirs(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# links /////////////////////////////////////////////////////////////////////////////////////////
+
+    // #links
     describe('#links', function () {
         var testSet = function () {
             command.links();
-            assertOutputPattern(command, /^rsync -l/);
             return command;
         };
-        it('should add the links flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the links flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -l/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().links(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# dry ///////////////////////////////////////////////////////////////////////////////////////////
+
+    // #dry
     describe('#dry', function () {
         var testSet = function () {
             command.dry();
-            assertOutputPattern(command, /rsync -n/);
             return command;
         };
-        it('should add the dry flag', testSet);
-        it('should be able to be unset', function () {
+
+        it('Should add the dry flag', function () {
+            testSet();
+            expect(command.command()).toMatch(/^rsync -n/);
+        });
+
+        it('Should be able to be unset', function () {
             command = testSet().dry(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
         });
     });
 
-//# hardLinks/////////////////////////////////////////////////////////////////////////////////////
+
+    // #hardLinks
     describe('#hardLinks', function () {
-
-        it('should add the hard links flag', function () {
+        it('Should add the hard links flag', function () {
             command.hardLinks();
-            assertOutputPattern(command, /rsync -H/);
+            expect(command.command()).toMatch(/^rsync -H/);
         });
 
-        it('should unset the hard links flag', function () {
+        it('Should unset the hard links flag', function () {
             command.hardLinks();
-            assertOutputPattern(command, /rsync -H/);
+            expect(command.command()).toMatch(/^rsync -H/);
+
             command.hardLinks(false);
-            assertOutput(command, output);
+            expect(command.command()).toBe(output);
+        });
+    });
+
+
+    // #perms
+    describe('#perms', function () {
+        it('Should add the perms flag', function () {
+            command.perms();
+            expect(command.command()).toMatch(/^rsync -p/);
         });
 
+        it('Should unset the perms flag', function () {
+            command.perms();
+            expect(command.command()).toMatch(/^rsync -p/);
+
+            command.perms(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
-//# perms ////////////////////////////////////////////////////////////////////////////////////////
-    describe('#perms', function () {
 
-      it('should add the perms flag', function () {
-        command.perms();
-        assertOutputPattern(command, /rsync -p/);
-      });
-
-      it('should unset the perms flag', function () {
-        command.perms();
-        assertOutputPattern(command, /rsync -p/);
-        command.perms(false);
-        assertOutput(command, output);
-      });
-
-    });
-
+    // #executability
     describe('#executability', function () {
+        it('Should add the executability flag', function () {
+            command.executability();
+            expect(command.command()).toMatch(/^rsync -E/);
+        });
 
-      it('should add the executability flag', function () {
-        command.executability();
-        assertOutputPattern(command, /rsync -E/);
-      });
+        it('Should unset the executability flag', function () {
+            command.executability();
+            expect(command.command()).toMatch(/^rsync -E/);
 
-      it('should unset the executability flag', function () {
-        command.executability();
-        assertOutputPattern(command, /rsync -E/);
-        command.executability(false);
-        assertOutput(command, output);
-      });
-
+            command.executability(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #owner
     describe('#owner', function () {
+        it('Should add the owner flag', function () {
+            command.owner();
+            expect(command.command()).toMatch(/^rsync -o/);
+        });
 
-      it('should add the owner flag', function () {
-        command.owner();
-        assertOutputPattern(command, /rsync -o/);
-      });
+        it('Should unset the owner flag', function () {
+            command.owner();
+            expect(command.command()).toMatch(/^rsync -o/);
 
-      it('should unset the owner flag', function () {
-        command.owner();
-        assertOutputPattern(command, /rsync -o/);
-        command.owner(false);
-        assertOutput(command, output);
-      });
-
+            command.owner(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #group
     describe('#group', function () {
+        it('Should add the group flag', function () {
+            command.group();
+            expect(command.command()).toMatch(/^rsync -g/);
+        });
 
-      it('should add the group flag', function () {
-        command.group();
-        assertOutputPattern(command, /rsync -g/);
-      });
+        it('Should unset the group flag', function () {
+            command.group();
+            expect(command.command()).toMatch(/^rsync -g/);
 
-      it('should unset the group flag', function () {
-        command.group();
-        assertOutputPattern(command, /rsync -g/);
-        command.group(false);
-        assertOutput(command, output);
-      });
+            command.group(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #acls
     describe('#acls', function () {
+        it('Should set the acls flag', function () {
+            command.acls();
+            expect(command.command()).toMatch(/^rsync -A/);
+        });
 
-      it('should set the acls flag', function () {
-        command.acls();
-        assertOutputPattern(command, /rsync -A/);
-      });
+        it('Should unset the acls flag', function () {
+            command.acls();
+            expect(command.command()).toMatch(/^rsync -A/);
 
-      it('should unset the acls flag', function () {
-        command.acls();
-        assertOutputPattern(command, /rsync -A/);
-        command.acls(false);
-        assertOutput(command, output);
-      });
-
+            command.acls(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #xattrs
     describe('#xattrs', function () {
+        it('Should set the xattrs flag', function () {
+            command.xattrs();
+            expect(command.command()).toMatch(/^rsync -X/);
+        });
 
-      it('should set the xattrs flag', function () {
-        command.xattrs();
-        assertOutputPattern(command, /rsync -X/);
-      });
+        it('Should unset the xattrs flag', function () {
+            command.xattrs();
+            expect(command.command()).toMatch(/^rsync -X/);
 
-      it('should unset the xattrs flag', function () {
-        command.xattrs();
-        assertOutputPattern(command, /rsync -X/);
-        command.xattrs(false);
-        assertOutput(command, output);
-      });
-
+            command.xattrs(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #devices
     describe('#devices', function () {
+        it('Should set the the devices option', function () {
+            command.devices();
+            expect(command.command()).toMatch(/^rsync --devices/);
+        });
 
-      it('should set the the devices option', function () {
-        command.devices();
-        assertOutputPattern(command, /rsync --devices/);
-      });
+        it('Should unset the devices option', function () {
+            command.devices();
+            expect(command.command()).toMatch(/^rsync --devices/);
 
-      it('should unset the devices option', function () {
-        command.devices();
-        assertOutputPattern(command, /rsync --devices/);
-        command.devices(false);
-        assertOutput(command, output);
-      });
-
+            command.devices(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #specials
     describe('#specials', function () {
+        it('Should set the the specials option', function () {
+            command.specials();
+            expect(command.command()).toMatch(/^rsync --specials/);
+        });
 
-      it('should set the the specials option', function () {
-        command.specials();
-        assertOutputPattern(command, /rsync --specials/);
-      });
+        it('Should unset the specials option', function () {
+            command.specials();
+            expect(command.command()).toMatch(/^rsync --specials/);
 
-      it('should unset the specials option', function () {
-        command.specials();
-        assertOutputPattern(command, /rsync --specials/);
-        command.specials(false);
-        assertOutput(command, output);
-      });
-
+            command.specials(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
+
+    // #times
     describe('#times', function () {
+        it('Should set the the times option', function () {
+            command.times();
+            expect(command.command()).toMatch(/^rsync -t/);
+        });
 
-      it('should set the the times option', function () {
-        command.times();
-        assertOutputPattern(command, /rsync -t/);
-      });
-
-      it('should unset the times option', function () {
-        command.times();
-        assertOutputPattern(command, /rsync -t/);
-        command.times(false);
-        assertOutput(command, output);
-      });
-
+        it('Should unset the times option', function () {
+            command.times(false);
+            expect(command.command()).toBe(output);
+        });
     });
 
 });

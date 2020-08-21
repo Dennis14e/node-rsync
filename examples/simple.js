@@ -9,7 +9,7 @@
  * The `shell` method is a shorthand for using `set('rsh', 'ssh')`.
  */
 
-var Rsync = require('../rsync');
+import Rsync from '../rsync';
 var cmd;
 
 /*

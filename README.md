@@ -279,7 +279,7 @@ Get or set the executable to use as the rsync command.
 
 ### executableShell(shell)
 
-Get or set the shell to use to launch the rsync command on non-Windows (Unix and Mac OS X) systems.  The default shell is /bin/sh.  
+Get or set the shell to use to launch the rsync command on non-Windows (Unix and Mac OS X) systems.  The default shell is /bin/sh.
 
 On some systems (Debian, for example) /bin/sh links to /bin/dash, which does not do proper process control.  If you have problems with leftover processes, try a different shell such as /bin/bash.
 
@@ -377,15 +377,15 @@ can optionally be provided.
 
 ```javascript
 var rsync = Rsync.build({
-  source:      '/path/to/source',
-  destination: 'server:/path/to/destination',
-  exclude:     ['.git'],
-  flags:       'avz',
-  shell:       'ssh'
+    source:      '/path/to/source',
+    destination: 'server:/path/to/destination',
+    exclude:     ['.git'],
+    flags:       'avz',
+    shell:       'ssh'
 });
 
 rsync.execute(function(error, stdout, stderr) {
-  // we're done
+    // we're done
 });
 ```
 
@@ -404,6 +404,10 @@ When adding a shorthand make sure it does not already exist, it is a sane name a
 If there is something broken (which there probably is), the same applies: fork, patch, pull request. Opening an issue is also possible.
 
 # Changelog
+
+v0.6.1-dev
+
+  - Complete overhaul
 
 v0.6.1
 

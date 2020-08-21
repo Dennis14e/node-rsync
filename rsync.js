@@ -513,12 +513,18 @@ Rsync.prototype.execute = function(callback, stdoutHandler, stderrHandler) {
     // see https://github.com/joyent/node/blob/937e2e351b2450cf1e9c4d8b3e1a4e2a2def58bb/lib/child_process.js#L589
     var cmdProc;
     if ('win32' === process.platform) {
-        cmdProc = spawn(this.executable(), this.args(),
-                        { stdio: 'pipe', windowsVerbatimArguments: true, cwd: this._cwd, env: this._env });
+        cmdProc = spawn(
+            this.executable(),
+            this.args(),
+            { stdio: 'pipe', windowsVerbatimArguments: true, cwd: this._cwd, env: this._env }
+        );
     }
     else {
-        cmdProc = spawn(this.executable(), this.args(),
-                        { stdio: 'pipe', cwd: this._cwd, env: this._env });
+        cmdProc = spawn(
+            this.executable(),
+            this.args(),
+            { stdio: 'pipe', cwd: this._cwd, env: this._env }
+        );
     }
 
     // Capture stdout and stderr if there are output handlers configured
@@ -948,7 +954,7 @@ function exposeMultiOption(option, name) {
                 value = [ value ];
             }
             else if (!isArray(current)) {
-              value = [ current, value ];
+                value = [ current, value ];
             }
             else {
                 value = current.concat(value);
@@ -1019,10 +1025,10 @@ function buildOption(name, value, escapeArg) {
  * @return {String}
  */
 function escapeShellArg(arg) {
-  if (!/(["'`\\$ ])/.test(arg)) {
-    return arg;
-  }
-  return '"' + arg.replace(/(["'`\\$])/g, '\\$1') + '"';
+    if (!/(["'`\\$ ])/.test(arg)) {
+        return arg;
+    }
+    return '"' + arg.replace(/(["'`\\$])/g, '\\$1') + '"';
 }
 
 /**
@@ -1031,17 +1037,17 @@ function escapeShellArg(arg) {
  * @return {String} the escaped version of the filename
  */
 function escapeFileArg(filename) {
-  filename = filename.replace(/(["'`\s\\\(\)\\$])/g,'\\$1');
-  if (!/(\\\\)/.test(filename)) {
+    filename = filename.replace(/(["'`\s\\()\\$])/g, '\\$1');
+    if (!/(\\\\)/.test(filename)) {
+        return filename;
+    }
+    // Under Windows rsync (with cygwin) and OpenSSH for Windows
+    // (http://www.mls-software.com/opensshd.html) are using
+    // standard linux directory separator so need to replace it
+    if ('win32' === process.platform) {
+        filename = filename.replace(/\\\\/g, '/').replace(/^["]?[A-Z]:\//ig, '/');
+    }
     return filename;
-  }
-  // Under Windows rsync (with cygwin) and OpenSSH for Windows
-  // (http://www.mls-software.com/opensshd.html) are using 
-  // standard linux directory separator so need to replace it
-  if ('win32' === process.platform) {
-    filename = filename.replace(/\\\\/g,'/').replace(/^["]?[A-Z]\:\//ig,'/');
-  }
-  return filename;
 }
 
 /**
@@ -1051,7 +1057,7 @@ function escapeFileArg(filename) {
  */
 function stripLeadingDashes(value) {
     if (typeof(value) === 'string') {
-        value = value.replace(/^[\-]*/, '');
+        value = value.replace(/^[-]*/, '');
     }
 
     return value;
@@ -1092,8 +1098,7 @@ function noop() {}
  *
  * @private
  * @param {Rsync} cmd
- * @param {String} message
  */
-function debug(cmd, message) {
+function debug(cmd) {
     if (!cmd._debug) return;
 }

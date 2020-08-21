@@ -1,9 +1,7 @@
-/*global describe,it,beforeEach,xdescribe,xit*/
 'use strict';
-var assert = require('chai').assert;
-var assertOutput = require('./helpers/output').assertOutput;
 
 var Rsync  = require('../rsync');
+
 
 describe('filters', function () {
     var command;
@@ -15,84 +13,102 @@ describe('filters', function () {
         });
     });
 
-    describe('#patterns', function () {
 
-        it('should interpret the first character', function () {
+    describe('#patterns', function () {
+        it('Should interpret the first character', function () {
             command.patterns(['-.git', '+/tests/*.test.js']);
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--exclude=.git --include=/tests/*.test.js');
         });
 
-        it('should be able to be set as an Object', function () {
+        it('Should be able to be set as an Object', function () {
             command.patterns([
                 { 'action': '+', 'pattern': '.git' },
-                { 'action': '-', 'pattern': '/tests/*.test' }
+                { 'action': '-', 'pattern': '/tests/*.test.js' }
             ]);
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--include=.git --exclude=/tests/*.test.js');
         });
 
-        it('should throw an error for invalid patterns', function () {
-            assert.throw(function () {
-                command.patterns(['*invalid']);
-            }, /^invalid pattern:/i);
+        it('Should throw an error for invalid patterns', function () {
+            expect(() => {
+                command.patterns(['*invalid'])
+            }).toThrow(/^invalid pattern:/i);
         });
 
-        it('should add patterns to output in order added', function () {
+        it('Should add patterns to output in order added', function () {
             command.patterns([
                 { 'action': '-', 'pattern': '.git' },
                 { 'action': '+', 'pattern': '/tests/*.test.js' },
                 '-build/*'
             ]);
-            assertOutput(command, 'rsync --exclude=.git --include=/tests/*.test.js --exclude=build/* SOURCE DESTINATION');
-        });
 
+            expect(command._patterns).toHaveLength(3);
+            expect(command.command()).toMatch('--exclude=.git --include=/tests/*.test.js --exclude=build/*');
+        });
     });
+
 
     describe('#exclude', function () {
-
-        it('should accept patterns as arguments', function () {
+        it('Should accept patterns as arguments', function () {
             command.exclude('.git', '.out');
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--exclude=.git --exclude=.out');
         });
 
-        it ('should accept patterns as an Array', function () {
+        it ('Should accept patterns as an Array', function () {
             command.exclude(['.build', 'docs']);
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--exclude=.build --exclude=docs');
         });
 
-        it('should add patterns to output in order added', function () {
+        it('Should add patterns to output in order added', function () {
             command.exclude('.git', 'docs', '/tests/*.test.js');
-            assertOutput(command, 'rsync --exclude=.git --exclude=docs --exclude=/tests/*.test.js SOURCE DESTINATION');
+
+            expect(command._patterns).toHaveLength(3);
+            expect(command.command()).toMatch('--exclude=.git --exclude=docs --exclude=/tests/*.test.js');
         });
 
-        it('should escape filenames', function () {
+        it('Should escape filenames', function () {
             command.exclude('with space', 'tests/* test.js');
-            assertOutput(command, 'rsync --exclude=with\\ space --exclude=tests/*\\ test.js SOURCE DESTINATION');
-        });
 
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--exclude=with\\ space --exclude=tests/*\\ test.js')
+        });
     });
+
 
     describe('#include', function () {
-
-        it('should accept patterns as arguments', function () {
+        it('Should accept patterns as arguments', function () {
             command.include('.git', '.out');
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--include=.git --include=.out');
         });
 
-        it ('should accept patterns as an Array', function () {
+        it ('Should accept patterns as an Array', function () {
             command.include(['.build', 'docs']);
-            assert.lengthOf(command._patterns, 2);
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--include=.build --include=docs');
         });
 
-        it('should add patterns to output in order added', function () {
+        it('Should add patterns to output in order added', function () {
             command.include('LICENSE', 'README.md', 'rsync.js');
-            assertOutput(command, 'rsync --include=LICENSE --include=README.md --include=rsync.js SOURCE DESTINATION');
+
+            expect(command._patterns).toHaveLength(3);
+            expect(command.command()).toMatch('--include=LICENSE --include=README.md --include=rsync.js');
         });
 
-        it('should escape filenames', function () {
+        it('Should escape filenames', function () {
             command.include('LICENSE FILE', '/tests/* test.js');
-            assertOutput(command, 'rsync --include=LICENSE\\ FILE --include=/tests/*\\ test.js SOURCE DESTINATION');
+
+            expect(command._patterns).toHaveLength(2);
+            expect(command.command()).toMatch('--include=LICENSE\\ FILE --include=/tests/*\\ test.js');
         });
-
     });
-
 });

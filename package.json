@@ -1,27 +1,28 @@
 {
-  "name": "rsync",
-  "version": "0.6.1",
-  "description": "Rsync cli wrapper",
-  "main": "rsync.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mattijs/node-rsync"
-  },
-  "keywords": [
-    "rsync",
-    "wrapper",
-    "cli",
-    "command"
-  ],
-  "author": "Mattijs Hoitink <mattijs@monkeyandmachine.com>",
-  "license": "MIT",
-  "readmeFilename": "README.md",
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.5.3",
-    "sinon": "^1.17.4"
-  },
-  "scripts": {
-    "test": "mocha -R spec tests/*.test.js"
-  }
+    "name": "rsync",
+    "version": "0.6.1-dev",
+    "description": "Rsync cli wrapper",
+    "main": "rsync.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Dennis14e/node-rsync"
+    },
+    "keywords": [
+        "rsync",
+        "wrapper",
+        "cli",
+        "command"
+    ],
+    "author": "Dennis Neufeld <Dennis14e@users.noreply.github.com>",
+    "license": "MIT",
+    "readmeFilename": "README.md",
+    "devDependencies": {
+        "eslint": "^7.7.0",
+        "eslint-plugin-jest": "^23.20.0",
+        "jest": "^26.4.1"
+    },
+    "scripts": {
+        "test": "jest ./tests/",
+        "lint": "eslint ."
+    }
 }

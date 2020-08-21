@@ -1,68 +1,60 @@
-/*global describe,it*/
 'use strict';
+
 var Rsync = require('../rsync');
-var assert = require('chai').assert;
-var assertOutput = require('./helpers/output').assertOutput;
 var path = require('path');
 
 
 describe('accessors', function () {
 
     describe('#executable', function () {
+        it('Should set the executable to use', function () {
+            var rsync = Rsync.build({
+                'source':      'a.txt',
+                'destination': 'b.txt',
+                'executable':  '/usr/local/bin/rsync'
+            });
 
-      it('should set the executable to use', function () {
-        var rsync = Rsync.build({
-          'source':      'a.txt',
-          'destination': 'b.txt',
-          'executable':  '/usr/local/bin/rsync'
+            expect(rsync.executable()).toBe('/usr/local/bin/rsync');
+            expect(rsync.command()).toBe('/usr/local/bin/rsync a.txt b.txt');
         });
-
-        assert.equal('/usr/local/bin/rsync', rsync.executable(), 'executable was set');
-        assertOutput(rsync, '/usr/local/bin/rsync a.txt b.txt');
-      });
-
     });
+
 
     describe('#executableShell', function () {
+        it('Should set the the executable shell to use', function () {
+            var rsync = Rsync.build({
+                'source':          'a.txt',
+                'destination':     'b.txt',
+                'executableShell': '/bin/zsh'
+            });
 
-      it('should set the the executable shell to use', function () {
-        var rsync = Rsync.build({
-          'source':           'a.txt',
-          'destination':      'b.txt',
-          'executableShell':  '/bin/zsh'
+            expect(rsync.executableShell()).toBe('/bin/zsh');
         });
-
-        assert.equal('/bin/zsh', rsync.executableShell(), 'executableShell was set');
-      });
-
     });
 
+
     describe('#cwd', function () {
+        it('Should set the the cwd to use', function () {
+            var rsync = Rsync.build({
+                'source':      'a.txt',
+                'destination': 'b.txt',
+                'cwd':         __dirname + '/..'
+            });
 
-      it('should set the the cwd to use', function () {
-        var rsync = Rsync.build({
-          'source':           'a.txt',
-          'destination':      'b.txt',
-          'cwd':  __dirname + '/..'
+            expect(rsync.cwd()).toBe(path.resolve(__dirname, '..'));
         });
-
-        assert.equal(path.resolve(__dirname, '..'), rsync.cwd(), 'cwd was set');
-      });
-
     });
 
     describe('#env', function () {
+        it('Should set the the env variables to use', function () {
+            var rsync = Rsync.build({
+                'source':      'a.txt',
+                'destination': 'b.txt',
+                'env':         {'red': 'blue'}
+            });
 
-      it('should set the the env variables to use', function () {
-        var rsync = Rsync.build({
-          'source':           'a.txt',
-          'destination':      'b.txt',
-          'env': {'red': 'blue'}
+            expect(rsync.env().red).toBe('blue');
         });
-
-        assert.equal('blue', rsync.env().red, 'env was set');
-      });
-
     });
 
 });
