@@ -57,9 +57,9 @@ Set an option. This can be any option from the rsync manual. The value is option
 
 ```javascript
 rsync.set('a')
-  .set('progress')
-  .set('list-only')
-  .set('exclude-from', '/path/to/exclude-file');
+    .set('progress')
+    .set('list-only')
+    .set('exclude-from', '/path/to/exclude-file');
 ```
 
 Options must be unique and setting the same option twice will override any existing value. For options that can be set multiple times special methods exist (see accessor methods). Any leading dashes (-) are stripped when setting the option.
@@ -101,9 +101,9 @@ rsync.flags(['a', 'z'], false); // unset
 
 // As Object
 rsync.flags({
-  'a': true, // set
-  'z': true, // set
-  'v': false // unset
+    'a': true, // set
+    'z': true, // set
+    'v': false // unset
 });
 ```
 
