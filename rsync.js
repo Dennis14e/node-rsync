@@ -1,3 +1,5 @@
+'use strict';
+
 var spawn = require('child_process').spawn;
 var path = require('path');
 
@@ -16,8 +18,8 @@ var path = require('path');
  *
  *   // using the build method with options
  *   var rsync = Rsync.build({
- *     source:      '/path/to/source',
- *     destination: 'myserver:destination/'
+ *       source:      '/path/to/source',
+ *       destination: 'myserver:destination/'
  *   });
  *
  * Executing the command can be done using the `execute` method. The command
@@ -26,16 +28,16 @@ var path = require('path');
  *
  * @example
  *   rsync.execute(function(error, code, cmd) {
- *     // function called when the child process is finished
+ *       // function called when the child process is finished
  *   }, function(stdoutChunk) {
- *     // function called when a chunk of text is received on stdout
+ *       // function called when a chunk of text is received on stdout
  *   }, function stderrChunk) {
- *     // function called when a chunk of text is received on stderr
+ *       // function called when a chunk of text is received on stderr
  *   });
  *
- * @author      Mattijs Hoitink <mattijs@monkeyandmachine.com>
- * @copyright   Copyright (c) 2013, Mattijs Hoitink <mattijs@monkeyandmachine.com>
- * @license     The MIT License
+ * @author    Mattijs Hoitink <mattijs@monkeyandmachine.com>
+ * @copyright 2013 Mattijs Hoitink <mattijs@monkeyandmachine.com>
+ * @license   MIT
  *
  * @constructor
  * @param {Object} config Configuration settings for the Rsync wrapper.
@@ -235,9 +237,9 @@ Rsync.prototype.option = function(name) {
  *
  *   // using Rsync.build for a new rsync object
  *   rsync = Rsync.build({
- *     ...
- *     patterns: [ '-docs', { action: '+', pattern: '/subdir/*.py' }]
- *     ...
+ *       ...
+ *       patterns: [ '-docs', { action: '+', pattern: '/subdir/*.py' }]
+ *       ...
  *   })
  *
  * @param {Array} patterns
@@ -929,7 +931,7 @@ function exposeShortOption(option, name) {
  * will accumulate all values.
  *
  * @param {String} option
- * @param {[String]} name
+ * @param {String} name
  */
 function exposeMultiOption(option, name) {
     name = name || option;

@@ -176,7 +176,7 @@ called with streaming data from the commands output when it is executed.
 
 ```javascript
 rsync.output(
-    function(data){
+    function(data) {
         // do things like parse progress
     }, function(data) {
         // do things like parse error output
@@ -229,7 +229,7 @@ var rsyncPid = rsync.execute(function(error, code, cmd) {
 var rsyncPid = rsync.execute(
     function(error, code, cmd) {
         // we're done
-    }, function(data){
+    }, function(data) {
         // do things like parse progress
     }, function(data) {
         // do things like parse error output
