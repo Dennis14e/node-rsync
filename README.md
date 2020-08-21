@@ -1,6 +1,7 @@
-# Rsync ![test status](https://github.com/Dennis14e/node-rsync/workflows/Test/badge.svg)
+# Rsync [![Test Status](https://github.com/Dennis14e/node-rsync/workflows/Test/badge.svg "Test Status")](https://github.com/Dennis14e/node-rsync/actions?query=workflow%3ATest)
 
 `Rsync` is a class for building and executing `rsync` commands with Node.js.
+This is a fork of the abandoned project [mattijs/node-rsync](https://github.com/mattijs/node-rsync).
 
 ## Installation
 

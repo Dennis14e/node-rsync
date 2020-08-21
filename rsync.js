@@ -36,7 +36,8 @@ var path = require('path');
  *   });
  *
  * @author    Mattijs Hoitink <mattijs@monkeyandmachine.com>
- * @copyright 2013 Mattijs Hoitink <mattijs@monkeyandmachine.com>
+ * @author    Dennis Neufeld <Dennis14e@users.noreply.github.com>
+ * @copyright 2013-2016 Mattijs Hoitink, 2020 Dennis Neufeld and Contributors
  * @license   MIT
  *
  * @constructor
