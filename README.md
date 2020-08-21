@@ -72,7 +72,7 @@ Unset an option. Any leading dashes (-) are stripped when unsetting an option.
 
 ```javascript
 rsync.unset('progress')
-  .unset('quiet');
+    .unset('quiet');
 ```
 
 The `unset` method is chainable.
@@ -403,9 +403,15 @@ If there is something broken (which there probably is), the same applies: fork, 
 
 # Changelog
 
-v0.6.1-dev
+v0.7.0-dev
 
   - Complete overhaul
+  - Added ESLint
+  - Replaced testing framework with Jest
+  - Replaced Travis CI with GitHub Actions
+  - Merged [mattijs/node-rsync#60](https://github.com/mattijs/node-rsync/pull/60)
+  - Merged [mattijs/node-rsync#62](https://github.com/mattijs/node-rsync/pull/62)
+  - Merged [mattijs/node-rsync#70](https://github.com/mattijs/node-rsync/pull/70)
 
 v0.6.1
 
