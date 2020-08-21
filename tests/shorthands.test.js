@@ -52,7 +52,7 @@ describe('shorthands', function () {
                 'chmod':       'ug=rwx'
             });
 
-            expect(rsync.command()).toMatch(/chmod=ug=rwx/i);
+            expect(rsync.command()).toMatch(/--chmod=ug=rwx/i);
         });
 
         it('Should allow multiple values through build', function () {
@@ -62,7 +62,7 @@ describe('shorthands', function () {
                 'chmod':       [ 'og=uwx', 'rx=ogw' ]
             });
 
-            expect(rsync.command()).toMatch(/chmod=og=uwx --chmod=rx=ogw/i);
+            expect(rsync.command()).toMatch(/--chmod=og=uwx --chmod=rx=ogw/i);
         });
 
         it('Should allow multiple values through setter', function () {
@@ -284,16 +284,18 @@ describe('shorthands', function () {
 
     // #hardLinks
     describe('#hardLinks', function () {
-        it('Should add the hard links flag', function () {
+        var testSet = function () {
             command.hardLinks();
+            return command;
+        };
+
+        it('Should add the hard links flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -H/);
         });
 
         it('Should unset the hard links flag', function () {
-            command.hardLinks();
-            expect(command.command()).toMatch(/^rsync -H/);
-
-            command.hardLinks(false);
+            command = testSet().hardLinks(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -301,16 +303,18 @@ describe('shorthands', function () {
 
     // #perms
     describe('#perms', function () {
-        it('Should add the perms flag', function () {
+        var testSet = function () {
             command.perms();
+            return command;
+        };
+
+        it('Should add the perms flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -p/);
         });
 
         it('Should unset the perms flag', function () {
-            command.perms();
-            expect(command.command()).toMatch(/^rsync -p/);
-
-            command.perms(false);
+            command = testSet().perms(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -318,16 +322,18 @@ describe('shorthands', function () {
 
     // #executability
     describe('#executability', function () {
-        it('Should add the executability flag', function () {
+        var testSet = function () {
             command.executability();
+            return command;
+        };
+
+        it('Should add the executability flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -E/);
         });
 
         it('Should unset the executability flag', function () {
-            command.executability();
-            expect(command.command()).toMatch(/^rsync -E/);
-
-            command.executability(false);
+            command = testSet().executability(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -335,16 +341,18 @@ describe('shorthands', function () {
 
     // #owner
     describe('#owner', function () {
-        it('Should add the owner flag', function () {
+        var testSet = function () {
             command.owner();
+            return command;
+        };
+
+        it('Should add the owner flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -o/);
         });
 
         it('Should unset the owner flag', function () {
-            command.owner();
-            expect(command.command()).toMatch(/^rsync -o/);
-
-            command.owner(false);
+            command = testSet().owner(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -352,16 +360,18 @@ describe('shorthands', function () {
 
     // #group
     describe('#group', function () {
-        it('Should add the group flag', function () {
+        var testSet = function () {
             command.group();
+            return command;
+        };
+
+        it('Should add the group flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -g/);
         });
 
         it('Should unset the group flag', function () {
-            command.group();
-            expect(command.command()).toMatch(/^rsync -g/);
-
-            command.group(false);
+            command = testSet().group(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -369,16 +379,18 @@ describe('shorthands', function () {
 
     // #acls
     describe('#acls', function () {
-        it('Should set the acls flag', function () {
+        var testSet = function () {
             command.acls();
+            return command;
+        };
+
+        it('Should set the acls flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -A/);
         });
 
         it('Should unset the acls flag', function () {
-            command.acls();
-            expect(command.command()).toMatch(/^rsync -A/);
-
-            command.acls(false);
+            command = testSet().acls(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -386,16 +398,18 @@ describe('shorthands', function () {
 
     // #xattrs
     describe('#xattrs', function () {
-        it('Should set the xattrs flag', function () {
+        var testSet = function () {
             command.xattrs();
+            return command;
+        };
+
+        it('Should set the xattrs flag', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -X/);
         });
 
         it('Should unset the xattrs flag', function () {
-            command.xattrs();
-            expect(command.command()).toMatch(/^rsync -X/);
-
-            command.xattrs(false);
+            command = testSet().xattrs(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -403,16 +417,18 @@ describe('shorthands', function () {
 
     // #devices
     describe('#devices', function () {
-        it('Should set the the devices option', function () {
+        var testSet = function () {
             command.devices();
+            return command;
+        };
+
+        it('Should set the the devices option', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync --devices/);
         });
 
         it('Should unset the devices option', function () {
-            command.devices();
-            expect(command.command()).toMatch(/^rsync --devices/);
-
-            command.devices(false);
+            command = testSet().devices(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -420,16 +436,18 @@ describe('shorthands', function () {
 
     // #specials
     describe('#specials', function () {
-        it('Should set the the specials option', function () {
+        var testSet = function () {
             command.specials();
+            return command;
+        };
+
+        it('Should set the the specials option', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync --specials/);
         });
 
         it('Should unset the specials option', function () {
-            command.specials();
-            expect(command.command()).toMatch(/^rsync --specials/);
-
-            command.specials(false);
+            command = testSet().specials(false);
             expect(command.command()).toBe(output);
         });
     });
@@ -437,15 +455,19 @@ describe('shorthands', function () {
 
     // #times
     describe('#times', function () {
-        it('Should set the the times option', function () {
+        var testSet = function () {
             command.times();
+            return command;
+        };
+
+        it('Should set the the times option', function () {
+            testSet();
             expect(command.command()).toMatch(/^rsync -t/);
         });
 
         it('Should unset the times option', function () {
-            command.times(false);
+            command = testSet().times(false);
             expect(command.command()).toBe(output);
         });
     });
-
 });
