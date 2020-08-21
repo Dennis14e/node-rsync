@@ -110,7 +110,7 @@ Rsync.build = function(options) {
 /**
  * Set an option.
  * @param {String} option
- * @param mixed value
+ * @param {Mixed} value
  * @return Rsync
  */
 Rsync.prototype.set = function(option, value) {
@@ -212,7 +212,7 @@ Rsync.prototype.isSet = function(option) {
 /**
  * Get an option by name.
  * @param {String} name
- * @return mixed
+ * @return {Mixed}
  */
 Rsync.prototype.option = function(name) {
     name = stripLeadingDashes(name);
