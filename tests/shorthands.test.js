@@ -6,7 +6,7 @@ var Rsync = require('../rsync');
 describe('shorthands', function () {
     var command, output;
 
-    beforeEach(function() {
+    beforeEach(function () {
         command = Rsync.build({
             'source':      'SOURCE',
             'destination': 'DESTINATION'

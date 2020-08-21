@@ -33,7 +33,7 @@ describe('filters', function () {
         });
 
         it('Should throw an error for invalid patterns', function () {
-            expect(() => {
+            expect(function () {
                 command.patterns(['*invalid'])
             }).toThrow(/^invalid pattern:/i);
         });
