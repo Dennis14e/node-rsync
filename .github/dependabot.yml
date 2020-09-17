@@ -7,9 +7,9 @@ updates:
     schedule:
       interval: "weekly"
 
-  # Maintain dependencies for javascript
-  - package-ecosystem: "javascript"
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-    version_requirement_updates: "increase_versions"
+    versioning-strategy: "increase"
