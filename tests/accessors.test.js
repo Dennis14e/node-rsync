@@ -49,6 +49,16 @@ describe('accessors', function () {
 
             expect(rsync.cwd()).toBe(path.resolve(__dirname, '..'));
         });
+
+        it('should throw if the cwd is not a string', function () {
+            expect.assertions(1);
+
+            expect(function () {
+                Rsync.build({
+                    'cwd': []
+                });
+            }).toThrow(/^directory should be a string/i);
+        });
     });
 
     describe('#env', function () {
@@ -62,6 +72,16 @@ describe('accessors', function () {
             });
 
             expect(rsync.env().red).toBe('blue');
+        });
+
+        it('should throw if the env is not a string', function () {
+            expect.assertions(1);
+
+            expect(function () {
+                Rsync.build({
+                    'env': 'string'
+                });
+            }).toThrow(/^environment should be an object/i);
         });
     });
 
