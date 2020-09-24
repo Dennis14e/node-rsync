@@ -9,7 +9,7 @@ var Rsync = require('../rsync');
  * These tests are meant as a general safeguard to complement
  * unit tests.
  */
-describe('general tests', function () {
+describe('general tests', function() {
     it('should throw error for invalid config', function () {
         expect.assertions(1);
 
