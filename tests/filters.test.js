@@ -40,7 +40,7 @@ describe('filters', function () {
             expect.assertions(1);
 
             expect(function () {
-                command.patterns(['*invalid'])
+                command.patterns(['*invalid']);
             }).toThrow(/^invalid pattern:/i);
         });
 
@@ -93,7 +93,7 @@ describe('filters', function () {
             command.exclude('with space', 'tests/* test.js');
 
             expect(command._patterns).toHaveLength(2);
-            expect(command.command()).toMatch('--exclude=with\\ space --exclude=tests/*\\ test.js')
+            expect(command.command()).toMatch('--exclude=with\\ space --exclude=tests/*\\ test.js');
         });
     });
 

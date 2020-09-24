@@ -23,7 +23,7 @@ cmd = new Rsync()
     .source('/path/to/source')
     .destination('you@server:/destination/path');
 
-cmd.execute(function(error, code, cmd) {
+cmd.execute(function (error, code, cmd) {
     console.log('All done executing', cmd);
 });
 
@@ -38,8 +38,8 @@ cmd = Rsync.build({
     'shell': 'ssh',
     'source': '/path/tp/source',
     'destination': 'you@server:/destination/path'
-})
+});
 
-cmd.execute(function(error, code, cmd) {
+cmd.execute(function (error, code, cmd) {
     console.log('All done executing', cmd);
 });

@@ -90,7 +90,7 @@ describe('input', function () {
     });
 
 
-    //# destination
+    // #destination
     describe('#destination', function () {
         var rsync;
 

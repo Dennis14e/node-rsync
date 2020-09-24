@@ -43,7 +43,7 @@ var path = require('path');
  * @constructor
  * @param {Object} config Configuration settings for the Rsync wrapper.
  */
-function Rsync(config) {
+function Rsync (config) {
     if (!(this instanceof Rsync)) {
         return new Rsync(config);
     }
@@ -91,7 +91,7 @@ function Rsync(config) {
  * @param {Object} options
  * @return {Rsync}
  */
-Rsync.build = function(options) {
+Rsync.build = function (options) {
     var command = new Rsync();
 
     // Process all options
@@ -116,7 +116,7 @@ Rsync.build = function(options) {
  * @param {Mixed} value
  * @return {Rsync}
  */
-Rsync.prototype.set = function(option, value) {
+Rsync.prototype.set = function (option, value) {
     option = stripLeadingDashes(option);
     if (option && option.length > 0) {
         this._options[option] = value || null;
@@ -129,7 +129,7 @@ Rsync.prototype.set = function(option, value) {
  * @param {String} option
  * @return {Rsync}
  */
-Rsync.prototype.unset = function(option) {
+Rsync.prototype.unset = function (option) {
     option = stripLeadingDashes(option);
 
     if (option && Object.keys(this._options).indexOf(option) >= 0) {
@@ -153,7 +153,7 @@ Rsync.prototype.unset = function(option) {
  * @param {Boolean} set
  * @return {Rsync}
  */
-Rsync.prototype.flags = function(flags, set) {
+Rsync.prototype.flags = function (flags, set) {
     // Do some argument handling
     if (!arguments.length) {
         return this;
@@ -185,7 +185,7 @@ Rsync.prototype.flags = function(flags, set) {
     // Turn array into an object
     if (isArray(flags)) {
         var obj = {};
-        flags.forEach(function(f) {
+        flags.forEach(function (f) {
             obj[f] = set;
         });
         flags = obj;
@@ -208,7 +208,7 @@ Rsync.prototype.flags = function(flags, set) {
  * @param {String} option
  * @return {Boolean}
  */
-Rsync.prototype.isSet = function(option) {
+Rsync.prototype.isSet = function (option) {
     option = stripLeadingDashes(option);
     return Object.keys(this._options).indexOf(option) >= 0;
 };
@@ -219,7 +219,7 @@ Rsync.prototype.isSet = function(option) {
  * @param {String} name
  * @return {Mixed}
  */
-Rsync.prototype.option = function(name) {
+Rsync.prototype.option = function (name) {
     name = stripLeadingDashes(name);
     return this._options[name];
 };
@@ -250,7 +250,7 @@ Rsync.prototype.option = function(name) {
  * @param {Array} patterns
  * @return {Rsync}
  */
-Rsync.prototype.patterns = function(patterns) {
+Rsync.prototype.patterns = function (patterns) {
     if (arguments.length > 1) {
         patterns = Array.prototype.slice.call(arguments, 0);
     }
@@ -258,7 +258,7 @@ Rsync.prototype.patterns = function(patterns) {
         patterns = [ patterns ];
     }
 
-    patterns.forEach(function(pattern) {
+    patterns.forEach(function (pattern) {
         var action = '?';
         if (typeof(pattern) === 'string') {
             action  = pattern.charAt(0);
@@ -295,7 +295,7 @@ Rsync.prototype.patterns = function(patterns) {
  * @param {String|Array} patterns
  * @return {Rsync}
  */
-Rsync.prototype.exclude = function(patterns) {
+Rsync.prototype.exclude = function (patterns) {
     if (arguments.length > 1) {
         patterns = Array.prototype.slice.call(arguments, 0);
     }
@@ -303,7 +303,7 @@ Rsync.prototype.exclude = function(patterns) {
         patterns = [ patterns ];
     }
 
-    patterns.forEach(function(pattern) {
+    patterns.forEach(function (pattern) {
         this._patterns.push({ action:  '-', pattern: pattern });
     }, this);
 
@@ -317,7 +317,7 @@ Rsync.prototype.exclude = function(patterns) {
  * @param {String|Array} patterns
  * @return {Rsync}
  */
-Rsync.prototype.include = function(patterns) {
+Rsync.prototype.include = function (patterns) {
     if (arguments.length > 1) {
         patterns = Array.prototype.slice.call(arguments, 0);
     }
@@ -325,7 +325,7 @@ Rsync.prototype.include = function(patterns) {
         patterns = [ patterns ];
     }
 
-    patterns.forEach(function(pattern) {
+    patterns.forEach(function (pattern) {
         this._patterns.push({ action:  '+', pattern: pattern });
     }, this);
 
@@ -337,7 +337,7 @@ Rsync.prototype.include = function(patterns) {
  *
  * @return {String}
  */
-Rsync.prototype.command = function() {
+Rsync.prototype.command = function () {
     return this.executable() + ' ' + this.args().join(' ');
 };
 
@@ -354,7 +354,7 @@ Rsync.prototype.toString = Rsync.prototype.command;
  *
  * @return {Array}
  */
-Rsync.prototype.args = function() {
+Rsync.prototype.args = function () {
     // Gathered arguments
     var args = [];
 
@@ -398,15 +398,19 @@ Rsync.prototype.args = function() {
     }
 
     // Add includes/excludes in order
-    this._patterns.forEach(function(def) {
-        if (def.action === '-') {
-            args.push(buildOption('exclude', def.pattern, escapeFileArg));
-        }
-        else if (def.action === '+') {
-            args.push(buildOption('include', def.pattern, escapeFileArg));
-        }
-        else {
-            debug(this, 'Unknown pattern action ' + def.action);
+    this._patterns.forEach(function (def) {
+        switch (def.action) {
+            case '-':
+                args.push(buildOption('exclude', def.pattern, escapeFileArg));
+                break;
+
+            case '+':
+                args.push(buildOption('include', def.pattern, escapeFileArg));
+                break;
+
+            default:
+                debug(this, 'Unknown pattern action ' + def.action);
+                break;
         }
     });
 
@@ -426,10 +430,10 @@ Rsync.prototype.args = function() {
 /**
  * Get and set rsync process cwd directory.
  *
- * @param  {String} cwd= Directory path relative to current process directory.
+ * @param  {String} cwd Directory path relative to current process directory.
  * @return {String} Return current _cwd.
  */
-Rsync.prototype.cwd = function(cwd) {
+Rsync.prototype.cwd = function (cwd) {
     if (arguments.length > 0) {
         if (typeof cwd !== 'string') {
             throw new Error('Directory should be a string');
@@ -444,10 +448,10 @@ Rsync.prototype.cwd = function(cwd) {
 /**
  * Get and set rsync process environment variables
  *
- * @param  {String} env= Environment variables
+ * @param  {String} env Environment variables
  * @return {String} Return current _env.
  */
-Rsync.prototype.env = function(env) {
+Rsync.prototype.env = function (env) {
     if (arguments.length > 0) {
         if (typeof env !== 'object') {
             throw new Error('Environment should be an object');
@@ -467,11 +471,11 @@ Rsync.prototype.env = function(env) {
  * Only one callback function can be registered for each output stream. Previously
  * registered callbacks will be overridden.
  *
- * @param {Function} stdout     Callback Function for stdout data
- * @param {Function} stderr     Callback Function for stderr data
+ * @param {Function} stdout Callback Function for stdout data
+ * @param {Function} stderr Callback Function for stderr data
  * @return Rsync
  */
-Rsync.prototype.output = function(stdout, stderr) {
+Rsync.prototype.output = function (stdout, stderr) {
     // Check for single argument so the method can be used with Rsync.build
     if (arguments.length === 1 && Array.isArray(stdout)) {
         stderr = stdout[1];
@@ -501,7 +505,7 @@ Rsync.prototype.output = function(stdout, stderr) {
  * @param {Function} stdoutHandler  Called on each chunk received from stdout (optional)
  * @param {Function} stderrHandler  Called on each chunk received from stderr (optional)
  */
-Rsync.prototype.execute = function(callback, stdoutHandler, stderrHandler) {
+Rsync.prototype.execute = function (callback, stdoutHandler, stderrHandler) {
     // Register output handlers
     this.output(stdoutHandler, stderrHandler);
 
@@ -532,7 +536,7 @@ Rsync.prototype.execute = function(callback, stdoutHandler, stderrHandler) {
     }
 
     // Wait for the command to finish
-    cmdProc.on('close', function(code) {
+    cmdProc.on('close', function (code) {
         var error = null;
 
         // Check rsyncs error code
@@ -549,7 +553,7 @@ Rsync.prototype.execute = function(callback, stdoutHandler, stderrHandler) {
 
     // Return the child process object so it can be cleaned up
     // if the process exits
-    return(cmdProc);
+    return cmdProc;
 };
 
 /**
@@ -869,10 +873,10 @@ module.exports = Rsync;
  * @param {String} name
  * @param {String} internal
  */
-function createValueAccessor(name, internal) {
+function createValueAccessor (name, internal) {
     var container = internal || '_' + name;
 
-    Rsync.prototype[name] = function(value) {
+    Rsync.prototype[name] = function (value) {
         if (!arguments.length) return this[container];
         this[container] = value;
         return this;
@@ -883,10 +887,10 @@ function createValueAccessor(name, internal) {
  * @param {String} name
  * @param {String} internal
  */
-function createListAccessor(name, internal) {
+function createListAccessor (name, internal) {
     var container = internal || '_' + name;
 
-    Rsync.prototype[name] = function(value) {
+    Rsync.prototype[name] = function (value) {
         if (!arguments.length) return this[container];
 
         if (isArray(value)) {
@@ -909,10 +913,10 @@ function createListAccessor(name, internal) {
  * @param {String} option
  * @param {String} name
  */
-function exposeShortOption(option, name) {
+function exposeShortOption (option, name) {
     name = name || option;
 
-    Rsync.prototype[name] = function(set) {
+    Rsync.prototype[name] = function (set) {
         // When no arguments are passed in assume the option
         // needs to be set
         if (!arguments.length) set = true;
@@ -929,10 +933,10 @@ function exposeShortOption(option, name) {
  * @param {String} option
  * @param {String} name
  */
-function exposeMultiOption(option, name) {
+function exposeMultiOption (option, name) {
     name = name || option;
 
-    Rsync.prototype[name] = function(value) {
+    Rsync.prototype[name] = function (value) {
         // When not arguments are passed in assume the options
         // current value is requested
         if (!arguments.length) return this.option(option);
@@ -971,10 +975,10 @@ function exposeMultiOption(option, name) {
  * @param {String} option   The option to expose
  * @param {String} name     An optional alternative name for the option.
  */
-function exposeLongOption(option, name) {
+function exposeLongOption (option, name) {
     name = name || option;
 
-    Rsync.prototype[name] = function(value) {
+    Rsync.prototype[name] = function (value) {
         // When not arguments are passed in assume the options
         // current value is requested
         if (!arguments.length) return this.option(option);
@@ -992,7 +996,7 @@ function exposeLongOption(option, name) {
  * @param {Function|Boolean} escapeArg
  * @return {String}
  */
-function buildOption(name, value, escapeArg) {
+function buildOption (name, value, escapeArg) {
     if (typeof escapeArg !== 'function' || escapeArg === true) {
         escapeArg = escapeShellArg;
     }
@@ -1020,7 +1024,7 @@ function buildOption(name, value, escapeArg) {
  * @param {String} arg
  * @return {String}
  */
-function escapeShellArg(arg) {
+function escapeShellArg (arg) {
     if (!/(["'`\\$ ])/.test(arg)) {
         return arg;
     }
@@ -1033,7 +1037,7 @@ function escapeShellArg(arg) {
  * @param {String} filename the filename to escape
  * @return {String} the escaped version of the filename
  */
-function escapeFileArg(filename) {
+function escapeFileArg (filename) {
     filename = filename.replace(/(["'`\s\\()\\$])/g, '\\$1');
     if (!/(\\\\)/.test(filename)) {
         return filename;
@@ -1053,7 +1057,7 @@ function escapeFileArg(filename) {
  * @param {String} value
  * @return {String}
  */
-function stripLeadingDashes(value) {
+function stripLeadingDashes (value) {
     if (typeof(value) === 'string') {
         value = value.replace(/^[-]*/, '');
     }
@@ -1069,7 +1073,7 @@ function stripLeadingDashes(value) {
  * @param {Mixed} value
  * @return {Boolean}
  */
-function isArray(value) {
+function isArray (value) {
     if (typeof(Array.isArray) === 'function') {
         return Array.isArray(value);
     }
@@ -1087,7 +1091,7 @@ function isArray(value) {
  * @param {String} key  The name of the property to check
  * @return {Boolean}
  */
-function hasOP(obj, key) {
+function hasOP (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
@@ -1097,6 +1101,6 @@ function hasOP(obj, key) {
  * @private
  * @param {Rsync} cmd
  */
-function debug(cmd) {
+function debug (cmd) {
     if (!cmd._debug) return;
 }

@@ -13,8 +13,12 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [ "error", 4 ],
+        "indent": [ "error", 4, { "SwitchCase": 1 } ],
         "max-len": [ "error", { "code": 120 } ],
+        "semi": [ "error", "always" ],
+        "spaced-comment": "error",
+        "space-before-function-paren": "error",
+        "keyword-spacing": "error",
         "require-jsdoc": "error",
         "jest/no-hooks": "off"
     },
