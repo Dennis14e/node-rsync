@@ -9,4 +9,9 @@ jobs:
       - name: Install modules
         run: npm install --only=dev
       - name: Run lint
-        run: npm run lint
+        uses: wearerequired/lint-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_name: "Lint Action"
+          git_email: "Dennis14e@users.noreply.github.com"
+          eslint: true
