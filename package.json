@@ -1,5 +1,5 @@
 {
-    "name": "node-rsync",
+    "name": "@dennis14e/node-rsync",
     "version": "0.7.0",
     "description": "Rsync cli wrapper",
     "keywords": [
@@ -14,10 +14,10 @@
     },
     "license": "MIT",
     "author": "Dennis Neufeld <git@dennis14e.de>",
-    "main": "src/rsync.js",
+    "main": "rsync.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Dennis14e/node-rsync.git"
+        "url": "git+https://github.com/Dennis14e/node-rsync.git"
     },
     "scripts": {
         "test": "jest ./tests/",
@@ -27,8 +27,5 @@
         "eslint": "^7.9.0",
         "eslint-plugin-jest": "^24.0.2",
         "jest": "^26.4.2"
-    },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
     }
 }

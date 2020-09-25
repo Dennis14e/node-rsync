@@ -8,7 +8,7 @@ This is a fork of the abandoned project [mattijs/node-rsync](https://github.com/
 Installation goes through NPM:
 
 ```
-$ npm install rsync
+$ npm install @dennis14e/node-rsync
 ```
 
 ## License
