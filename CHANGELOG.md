@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7.1
+
+  - Updated GitHub Actions for automatic release
+
 ## v0.7.0
 
   - Complete overhaul
