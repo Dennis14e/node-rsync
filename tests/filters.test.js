@@ -18,7 +18,7 @@ describe('filters', function () {
         it('should interpret the first character', function () {
             expect.assertions(2);
 
-            command.patterns(['-.git', '+/tests/*.test.js']);
+            command.patterns([ '-.git', '+/tests/*.test.js' ]);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--exclude=.git --include=/tests/*.test.js');
@@ -40,7 +40,7 @@ describe('filters', function () {
             expect.assertions(1);
 
             expect(function () {
-                command.patterns(['*invalid']);
+                command.patterns([ '*invalid' ]);
             }).toThrow(/^invalid pattern:/i);
         });
 
@@ -72,7 +72,7 @@ describe('filters', function () {
         it ('should accept patterns as an Array', function () {
             expect.assertions(2);
 
-            command.exclude(['.build', 'docs']);
+            command.exclude([ '.build', 'docs' ]);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--exclude=.build --exclude=docs');
@@ -111,7 +111,7 @@ describe('filters', function () {
         it ('should accept patterns as an Array', function () {
             expect.assertions(2);
 
-            command.include(['.build', 'docs']);
+            command.include([ '.build', 'docs' ]);
 
             expect(command._patterns).toHaveLength(2);
             expect(command.command()).toMatch('--include=.build --include=docs');

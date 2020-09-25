@@ -68,7 +68,7 @@ describe('accessors', function () {
             var rsync = Rsync.build({
                 'source':      'a.txt',
                 'destination': 'b.txt',
-                'env':         {'red': 'blue'}
+                'env':         { 'red': 'blue' }
             });
 
             expect(rsync.env().red).toBe('blue');

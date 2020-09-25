@@ -147,58 +147,58 @@ describe('options', function () {
             expect.assertions(1);
 
             command.flags('avz');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
         });
 
         it('should set multiple flags from arguments', function () {
             expect.assertions(1);
 
             command.flags('v', 'z', 'a');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
         });
 
         it('should set multiple flags from an array', function () {
             expect.assertions(1);
 
-            command.flags(['z', 'a', 'v']);
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            command.flags([ 'z', 'a', 'v' ]);
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
         });
 
         it('should unset multiple flags from a string', function () {
             expect.assertions(2);
 
             command.flags('avz');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
 
             command.flags('az', false);
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['v']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'v' ]));
         });
 
         it('should set multiple flags from arguments (string)', function () {
             expect.assertions(2);
 
             command.flags('avz');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
 
             command.flags('z', 'v', false);
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a' ]));
         });
 
         it('should set multiple flags from an array (string)', function () {
             expect.assertions(2);
 
             command.flags('avz');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['a', 'v', 'z']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'a', 'v', 'z' ]));
 
-            command.flags(['a', 'v'], false);
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['z']));
+            command.flags([ 'a', 'v' ], false);
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'z' ]));
         });
 
         it('should set/unset flags from an object', function () {
             expect.assertions(2);
 
             command.flags('flag');
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['f', 'l', 'a', 'g']));
+            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining([ 'f', 'l', 'a', 'g' ]));
 
             command.flags({
                 'l': false,
@@ -207,7 +207,8 @@ describe('options', function () {
                 'w': true,
                 'b': true
             });
-            expect(Object.keys(command._options)).toStrictEqual(expect.arrayContaining(['f', 'u', 'w', 'g', 'a', 'b']));
+            expect(Object.keys(command._options))
+                .toStrictEqual(expect.arrayContaining([ 'f', 'u', 'w', 'g', 'a', 'b' ]));
         });
     });
 });
