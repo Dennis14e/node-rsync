@@ -74,7 +74,7 @@ describe('accessors', function () {
             expect(rsync.env().red).toBe('blue');
         });
 
-        it('should throw if the env is not a string', function () {
+        it('should throw if the env is not an object', function () {
             expect.assertions(1);
 
             expect(function () {
