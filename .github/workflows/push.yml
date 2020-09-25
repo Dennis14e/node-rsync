@@ -21,7 +21,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install modules
+      - name: Install node modules
         run: npm install --only=dev
 
       - name: Run tests
@@ -31,7 +31,7 @@ jobs:
     name: Publish to npm
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
     name: Release to GitHub
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -61,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: ${{ github.ref }}
           body: |
-            See CHANGELOG.md#${{ github.ref }}
+            See CHANGELOG.md

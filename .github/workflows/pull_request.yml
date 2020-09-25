@@ -21,7 +21,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install modules
+      - name: Install node modules
         run: npm install --only=dev
 
       - name: Run lint
