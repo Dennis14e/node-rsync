@@ -28,7 +28,7 @@ var rsync = new Rsync()
     .destination('server:/path/to/destination');
 
 // Execute the command
-rsync.execute(function(error, code, cmd) {
+rsync.execute(function (error, code, cmd) {
     // we're done
 });
 ```
@@ -97,8 +97,8 @@ rsync.flags('a', 'v', 'z');        // set
 rsync.flags('a', 'v', 'z', false); // unset
 
 // As Array
-rsync.flags(['a', 'v', 'z']);   // set
-rsync.flags(['a', 'z'], false); // unset
+rsync.flags([ 'a', 'v', 'z' ]);   // set
+rsync.flags([ 'a', 'z' ], false); // unset
 
 // As Object
 rsync.flags({
@@ -177,9 +177,9 @@ called with streaming data from the commands output when it is executed.
 
 ```javascript
 rsync.output(
-    function(data) {
+    function (data) {
         // do things like parse progress
-    }, function(data) {
+    }, function (data) {
         // do things like parse error output
     }
 );
@@ -192,7 +192,7 @@ handlers through the `Rsync.build` method by specifying the functions as an arra
 ```javascript
 var rsync = Rsync.build({
     // ...
-    output: [stdoutFunc, stderrFunc] // these are references to functions defined elsewhere
+    output: [ stdoutFunc, stderrFunc ] // these are references to functions defined elsewhere
     // ...
 });
 ```
@@ -211,7 +211,7 @@ rsync process or clean up if the main program exits early.
 
 ```javascript
 // signal handler function
-var quitting = function() {
+var quitting = function () {
     if (rsyncPid) {
         rsyncPid.kill();
     }
@@ -222,17 +222,17 @@ process.on("SIGTERM", quitting); // run signal handler on SIGTERM
 process.on("exit", quitting); // run signal handler when main process exits
 
 // simple execute
-var rsyncPid = rsync.execute(function(error, code, cmd) {
+var rsyncPid = rsync.execute(function (error, code, cmd) {
     // we're done
 });
 
 // execute with stream callbacks
 var rsyncPid = rsync.execute(
-    function(error, code, cmd) {
+    function (error, code, cmd) {
         // we're done
-    }, function(data) {
+    }, function (data) {
         // do things like parse progress
-    }, function(data) {
+    }, function (data) {
         // do things like parse error output
     }
 );
@@ -296,7 +296,7 @@ rsync.source('/a/path')
     .source('/b/path');
 
 // as Array
-rsync.source(['/a/path', '/b/path']);
+rsync.source([ '/a/path', '/b/path' ]);
 ```
 
 In both cases the list of sources will contain two paths.
@@ -341,7 +341,7 @@ rsync.exclude('.git')
     .exclude('.DS_Store');
 
 // as Array
-rsync.exclude(['.git', '.DS_Store']);
+rsync.exclude([ '.git', '.DS_Store' ]);
 ```
 
 ### include(pattern)
@@ -356,7 +356,7 @@ rsync.include('/a/file')
     .include('/b/file');
 
 // as Array
-rsync.include(['/a/file', '/b/file']);
+rsync.include([ '/a/file', '/b/file' ]);
 ```
 
 ### debug(flag)
@@ -378,12 +378,12 @@ can optionally be provided.
 var rsync = Rsync.build({
     source:      '/path/to/source',
     destination: 'server:/path/to/destination',
-    exclude:     ['.git'],
+    exclude:     [ '.git' ],
     flags:       'avz',
     shell:       'ssh'
 });
 
-rsync.execute(function(error, stdout, stderr) {
+rsync.execute(function (error, stdout, stderr) {
     // we're done
 });
 ```
@@ -410,7 +410,6 @@ v0.7.0
   - Added ESLint
   - Replaced testing framework with Jest
   - Replaced Travis CI with GitHub Actions
-  - Merged [mattijs/node-rsync#60](https://github.com/mattijs/node-rsync/pull/60)
   - Merged [mattijs/node-rsync#62](https://github.com/mattijs/node-rsync/pull/62)
   - Merged [mattijs/node-rsync#70](https://github.com/mattijs/node-rsync/pull/70)
 
