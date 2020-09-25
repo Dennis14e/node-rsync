@@ -412,6 +412,7 @@ v0.7.0
   - Replaced Travis CI with GitHub Actions
   - Merged [mattijs/node-rsync#62](https://github.com/mattijs/node-rsync/pull/62)
   - Merged [mattijs/node-rsync#70](https://github.com/mattijs/node-rsync/pull/70)
+  - Merged [mattijs/node-rsync#71](https://github.com/mattijs/node-rsync/pull/71)
 
 v0.6.1
 
