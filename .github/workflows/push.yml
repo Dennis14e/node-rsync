@@ -1,4 +1,4 @@
-name: Test, Lint & Publish
+name: Test, Lint & Release
 
 on: push
 
