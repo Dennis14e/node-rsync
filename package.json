@@ -13,7 +13,7 @@
         "url": "https://github.com/Dennis14e/node-rsync/issues"
     },
     "license": "MIT",
-    "author": "Dennis Neufeld <git@dennis14e.de>",
+    "author": "Dennis Neufeld <git@dneufeld.net>",
     "main": "rsync.js",
     "repository": {
         "type": "git",
