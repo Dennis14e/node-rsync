@@ -1,6 +1,9 @@
 name: Test, Lint & Release
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   test:
