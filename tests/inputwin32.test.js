@@ -4,8 +4,11 @@ var Rsync = require('../rsync');
 
 
 describe('inputwin32', function () {
+    var originalPlatform;
+
     beforeAll(function () {
-        this.originalPlatform = process.platform;
+        originalPlatform = process.platform;
+
         Object.defineProperty(process, 'platform', {
             value: 'win32'
         });
@@ -48,7 +51,7 @@ describe('inputwin32', function () {
 
     afterAll(function () {
         Object.defineProperty(process, 'platform', {
-            value: this.originalPlatform
+            value: originalPlatform
         });
     });
 });
